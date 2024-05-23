@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders CustomButton component 1`] = `
+<div>
+  <button
+    class="chakra-button css-16i2zh9"
+    type="button"
+  />
+</div>
+`;
