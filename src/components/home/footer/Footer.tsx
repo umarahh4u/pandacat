@@ -79,8 +79,15 @@ function Footer() {
           <Box
             sx={{
               width: "100%",
-              justifyContent: "space-between",
+              justifyContent: [
+                "center",
+                "space-between",
+                "space-between",
+                "space-between",
+              ],
+              alignItems: "center",
               display: "flex",
+              flexDirection: ["column", "row", "row", "row"],
             }}
           >
             <CustomImage
@@ -96,6 +103,7 @@ function Footer() {
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "1rem",
+                maxW: "3rem",
               }}
             >
               <FaTwitter cursor="pointer" color="white" fontSize={"1.5rem"} />

@@ -7,34 +7,24 @@ import {
   Flex,
   Text,
   Box,
+  SimpleGrid,
 } from "@chakra-ui/react";
-
-{
-  /* @ts-ignore */
-}
-import Carousel from "react-grid-carousel";
 
 import Reveal from "@/components/reveal";
 import CustomImage from "@/components/Image";
 import CustomButton from "@/components/Button";
 
 const sampleItems = [
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
-  "/img/herobg.webp",
+  "/img/vector1.svg",
+  "/img/vector2.svg",
+  "/img/vector3.svg",
+  "/img/vector4.svg",
+  "/img/vector5.svg",
+  "/img/vector6.svg",
+  "/img/vector7.svg",
+  "/img/vector8.svg",
+  "/img/vector9.svg",
+  "/img/vector10.svg",
 ];
 
 function Gallary() {
@@ -77,6 +67,26 @@ function Gallary() {
           />
           <Text
             sx={{
+              bgGradient: "linear(to-r, #FEFFF7, #7CE94C))",
+              bgClip: "text",
+              color: "#7be94c",
+              textShadow: `0px 0px 0 rgb(75,185,28),
+            -1px 1px 0 rgb(28,138,0),
+            -2px 2px 0 rgb(-20,90,0),
+            -3px 3px 0 rgb(-68,42,0),
+            -4px 4px  0 rgb(-116,-6,0),
+            -5px 5px 4px rgba(24,87,9,0.43),
+            -5px 5px 1px rgba(24,87,9,0.5),
+            0px 0px 4px rgba(24,87,9,.2);`,
+              fontSize: "4rem",
+              fontFamily: "Chelsea Market",
+              fontWeight: 400,
+            }}
+          >
+            PANDA CAT MEMEMAKER
+          </Text>
+          <Text
+            sx={{
               fontFamily: "Inika",
               fontWeight: 400,
               fontSize: "1.6rem",
@@ -106,36 +116,34 @@ function Gallary() {
           </Box>
         </Flex>
       </Reveal>
-      <Carousel
-        rows={2}
-        cols={6}
-        gap={15}
-        hideArrow={true}
-        loop
-        autoplay={1000}
+      <Box
+        sx={{
+          w: "full",
+          maxH: "28rem",
+          // minH: "20rem",
+          overflowY: "scroll",
+          mx: "auto",
+        }}
       >
-        {sampleItems &&
-          sampleItems.length > 0 &&
-          sampleItems.map((item, i) => (
-            <Carousel.Item
-              sx={{
-                transform: "skew(-15deg)",
-              }}
-              key={`item_${i}`}
-            >
+        <SimpleGrid minChildWidth="250px" spacing="10px">
+          {sampleItems &&
+            sampleItems.length > 0 &&
+            sampleItems.map((item, i) => (
               <Box
                 sx={{
                   transform: "skew(-15deg)",
-                  borderRadius: "5px",
-                  overflow: "hidden",
-                  width: "full",
                 }}
+                key={`item_${i}`}
+                maxH="244px"
+                maxWidth={"320px"}
+                borderRadius="5px"
+                overflow="hidden"
               >
-                <CustomImage src={item} width={289} height={210} fill />
+                <CustomImage src={item} width={320} height={210} fill />
               </Box>
-            </Carousel.Item>
-          ))}
-      </Carousel>
+            ))}
+        </SimpleGrid>
+      </Box>
     </chakra.div>
   );
 }

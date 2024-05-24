@@ -47,7 +47,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
       bg={bg}
       pb="4rem"
       transition="background 0.2s"
-      overflowY="hidden"
+      overflow="hidden"
       position="relative"
       bgRepeat="no-repeat, no-repeat"
       bgSize="cover"
