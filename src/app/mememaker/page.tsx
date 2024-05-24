@@ -65,6 +65,15 @@ function page() {
   const [mounted, setMounted] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [imageSelect, setImageSelect] = useState<any[]>([...imageList]);
+  const [firstSTep, setFirstStep] = useState<boolean>(false);
+
+  const handleGenerateMeme = () => {
+    setFirstStep(true);
+  };
+
+  const handlePrevious = () => {
+    setFirstStep(false);
+  };
 
   const toggleSelectImage = (e: any, item: any) => {
     console.log("eee", e, "item", item);
@@ -129,7 +138,6 @@ function page() {
       <Box
         sx={{
           maxW: "85rem",
-          // w: "100%",
           mt: "6.5rem",
           mx: "auto",
           overflow: "hidden",
@@ -155,7 +163,7 @@ function page() {
               mb: "0.6rem",
             }}
           >
-            Panda Cat Meme Maker
+            {firstSTep === false ? " Panda Cat Meme Maker" : "Preview"}
           </Text>
           <Text
             sx={{
@@ -166,70 +174,81 @@ function page() {
               mb: "1rem",
             }}
           >
-            Level up your crypto game with our meme-making platform. Create
-            irresistible content to shill memecoins like a pro.
+            {firstSTep === false
+              ? `Level up your crypto game with our meme-making platform. Creat
+            irresistible content to shill memecoins like a pro.`
+              : ""}
           </Text>
-          <Box
-            sx={{
-              borderRadius: "10px",
-              border: "0.33px solid white",
-              w: "100%",
-              p: "1.5rem",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              mb: "1.8rem",
-            }}
-            {...getRootProps()}
-          >
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <Text>Drop file here</Text>
-            ) : (
-              <>
-                {selectedFiles.length > 0 ? (
-                  selectedFiles.map((file) => (
+          {firstSTep === false ? (
+            <Box
+              sx={{
+                borderRadius: "10px",
+                border: "0.33px solid white",
+                w: "100%",
+                p: "1.5rem",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                mb: "1.8rem",
+                cursor: "pointer",
+              }}
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <Text>Drop file here</Text>
+              ) : (
+                <>
+                  {selectedFiles.length > 0 ? (
+                    selectedFiles.map((file) => (
+                      <>
+                        <CustomImage
+                          key={file && file?.name}
+                          src={file?.preview}
+                          width={147}
+                          height={120}
+                          // onLoad={() => {
+                          //   URL.revokeObjectURL(selectedFiles[0]?.preview);
+                          // }}
+                        />
+                      </>
+                    ))
+                  ) : (
                     <>
-                      <CustomImage
-                        key={file && file?.name}
-                        src={file?.preview}
-                        width={147}
-                        height={120}
-                        // onLoad={() => {
-                        //   URL.revokeObjectURL(selectedFiles[0]?.preview);
-                        // }}
+                      <CiFileOn
+                        fontSize={"2rem"}
+                        color="white"
+                        cursor={"pointer"}
                       />
-                    </>
-                  ))
-                ) : (
-                  <>
-                    <CiFileOn fontSize={"2rem"} color="white" />
-                    <Text
-                      sx={{
-                        fontSize: "1rem",
-                        color: "#8D8D8D",
-                        fontFamily: "Inika",
-                        textAlign: "center",
-                        cursor: "pointer",
-                      }}
-                    >
                       <Text
-                        as="span"
                         sx={{
-                          color: "#9BDF6D",
-                          fontWeight: 700,
-                          fontFamily: "inherit",
+                          fontSize: "1rem",
+                          color: "#8D8D8D",
+                          fontFamily: "Inika",
+                          textAlign: "center",
+                          cursor: "pointer",
                         }}
                       >
-                        Click to upload
-                      </Text>{" "}
-                      or drag and drop <br /> PNG, JPG or JPEG (max. 2mb)
-                    </Text>
-                  </>
-                )}
-              </>
-            )}
-          </Box>
+                        <Text
+                          as="span"
+                          sx={{
+                            color: "#9BDF6D",
+                            fontWeight: 700,
+                            fontFamily: "inherit",
+                          }}
+                        >
+                          Click to upload
+                        </Text>{" "}
+                        or drag and drop <br /> PNG, JPG or JPEG (max. 2mb)
+                      </Text>
+                    </>
+                  )}
+                </>
+              )}
+            </Box>
+          ) : (
+            ""
+          )}
 
           <Divider mb="1.2rem" />
           <Text
@@ -242,62 +261,89 @@ function page() {
               mb: "1rem",
             }}
           >
-            Select Meme Template
+            {firstSTep === false ? " Select Meme Template" : ""}
           </Text>
           <Box
             sx={{
               w: "full",
               maxH: "20rem",
+              minH: firstSTep ? "20rem" : "0",
               overflowY: "scroll",
+              backgroundColor: firstSTep && "#2B2B26",
             }}
           >
-            <SimpleGrid minChildWidth="250px" spacing="15px">
-              {imageSelect &&
-                imageSelect.length > 0 &&
-                imageSelect.map((image) => (
-                  <Box
-                    key={image.id}
-                    sx={{
-                      position: "relative",
-                    }}
-                    cursor={"pointer"}
-                    onClick={(e: any) => toggleSelectImage(e, image)}
-                  >
-                    {image.checked === false ? (
-                      <></>
-                    ) : (
-                      <Box
-                        position="absolute"
-                        right="30px"
-                        top="10px"
-                        zIndex={5}
-                      >
-                        <IoIosCheckbox
-                          fontSize={"2.5rem"}
-                          color={PandaCat.colorCheck}
-                        />
-                      </Box>
-                    )}
+            {firstSTep === false ? (
+              <SimpleGrid minChildWidth="250px" spacing="15px">
+                {imageSelect &&
+                  imageSelect.length > 0 &&
+                  imageSelect.map((image) => (
+                    <Box
+                      key={image.id}
+                      sx={{
+                        position: "relative",
+                      }}
+                      cursor={"pointer"}
+                      onClick={(e: any) => toggleSelectImage(e, image)}
+                    >
+                      {image.checked === false ? (
+                        <></>
+                      ) : (
+                        <Box
+                          position="absolute"
+                          right="30px"
+                          top="10px"
+                          zIndex={5}
+                        >
+                          <IoIosCheckbox
+                            fontSize={"2.5rem"}
+                            color={PandaCat.colorCheck}
+                          />
+                        </Box>
+                      )}
 
-                    <CustomImage
-                      src={image.url}
-                      width={250}
-                      height={80}
-                      alt="images"
-                    />
-                  </Box>
-                ))}
-            </SimpleGrid>
+                      <CustomImage
+                        src={image.url}
+                        width={250}
+                        height={80}
+                        alt="images"
+                      />
+                    </Box>
+                  ))}
+              </SimpleGrid>
+            ) : (
+              ""
+            )}
           </Box>
           <Divider mb="1.5rem" />
-          <Flex justify="flex-end">
+          <Flex
+            justifyContent={`${
+              firstSTep === true ? "space-between" : "flex-end"
+            }`}
+          >
+            {!!firstSTep && (
+              <CustomButton
+                sx={{
+                  maxW: "13rem",
+                  alignSelf: "right",
+                }}
+                variant={"gray"}
+                onClick={handlePrevious}
+              >
+                Back
+              </CustomButton>
+            )}
+
             <CustomButton
               sx={{
                 maxW: "13rem",
                 alignSelf: "right",
               }}
+              onClick={(e) => {
+                e.preventDefault();
+                handleGenerateMeme();
+              }}
             >
-              Generate meme
+              {firstSTep === false ? "Generate meme" : "Download"}
             </CustomButton>
           </Flex>
         </Box>
