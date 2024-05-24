@@ -123,11 +123,11 @@ function page() {
   return (
     <chakra.div
       id="home"
-      height={{ base: "auto", md: "auto" }}
+      height={{ base: "100vh", md: "100vh" }}
       w="full"
       pb="4rem"
       transition="background 0.2s"
-      overflowY="hidden"
+      overflowY="scroll"
       position="relative"
       bgRepeat="no-repeat, no-repeat"
       bgSize="cover"
