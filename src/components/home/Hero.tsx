@@ -52,7 +52,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
       bgRepeat="no-repeat, no-repeat"
       bgSize="cover"
       bgImage="/img/herobg.webp"
-      bgPosition="center right, top left 45px"
+      bgPosition="center"
     >
       <NavBar canStick={triggerNav} menus={menus} />
       <Flex

@@ -132,7 +132,7 @@ function page() {
       bgRepeat="no-repeat, no-repeat"
       bgSize="cover"
       bgImage="/img/herobg.webp"
-      bgPosition="center right, top left 45px"
+      bgPosition="center"
     >
       <NavBar canStick={triggerNav} menus={navMenus} />
       <Box
@@ -145,7 +145,6 @@ function page() {
       >
         <Box
           sx={{
-            // w: "full",
             mx: ["1rem", "3rem", "4rem", "6rem"],
             borderRadius: "10px",
             boxShadow: "rgba(16, 24, 40, 0.08)",
