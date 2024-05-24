@@ -81,11 +81,12 @@ const NavBar = ({ menus, canStick }: IProps) => {
           <CloseButton
             aria-label="Close menu"
             justifySelf="end"
+            color="white"
             onClick={onCloseNav}
           />
         </Flex>
         <DrawerBody
-          bg={bg}
+          bg={"#010101"}
           display="flex"
           flexDir={"column"}
           pb={4}
@@ -240,6 +241,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
             {menus && menus.length > 0 && (
               <IconButton
                 display={["flex", "flex", "none", "none"]}
+                color="white"
                 aria-label="Open menu"
                 fontSize="20px"
                 variant="ghost"
