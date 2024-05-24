@@ -121,16 +121,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
                     router.push(menu.path);
                   }}
                 >
-                  {/* <ScrollLink
-                    to={menu.id}
-                    spy={true}
-                    smooth={true}
-                    offset={-100}
-                    duration={500}
-                    onClick={onCloseNav}
-                  > */}
                   {menu.name}
-                  {/* </ScrollLink> */}
                 </Link>
                 <Divider
                   sx={{
@@ -147,7 +138,21 @@ const NavBar = ({ menus, canStick }: IProps) => {
               maxW: "9rem",
             }}
           >
-            Buy $PC
+            <Text
+              sx={{
+                textShadow: `0px 0px 0 rgb(182,185,180),
+             -1px 1px 0 rgb(128,131,126),
+             -2px 2px 0 rgb(75,78,73),
+             -3px 3px 0 rgb(21,24,19),
+             -4px 4px  0 rgb(-32,-29,0),
+             -5px 5px 4px rgba(3,10,1,0.56),
+             -5px 5px 1px rgba(3,10,1,0.5),
+             0px 0px 4px rgba(3,10,1,.2)`,
+                color: "white",
+              }}
+            >
+              Buy $PC
+            </Text>
           </CustomButton>
         </DrawerBody>
       </DrawerContent>
@@ -227,9 +232,18 @@ const NavBar = ({ menus, canStick }: IProps) => {
                     letterSpacing={"-3.5%"}
                     color="rgba(254, 253, 251, 1)"
                     fontFamily={"Lilita One"}
-                    textShadow={"rgba(16, 46, 11, 1)"}
-                    dropShadow={"rgba(16, 46, 11, 1)"}
                     transform={"skew(15deg)"}
+                    sx={{
+                      textShadow: `0px 0px 0 rgb(182,185,180),
+             -1px 1px 0 rgb(128,131,126),
+             -2px 2px 0 rgb(75,78,73),
+             -3px 3px 0 rgb(21,24,19),
+             -4px 4px  0 rgb(-32,-29,0),
+             -5px 5px 4px rgba(3,10,1,0.56),
+             -5px 5px 1px rgba(3,10,1,0.5),
+             0px 0px 4px rgba(3,10,1,.2)`,
+                      color: "white",
+                    }}
                   >
                     {" "}
                     Buy $PC

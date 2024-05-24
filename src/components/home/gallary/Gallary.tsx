@@ -65,7 +65,8 @@ function Gallary() {
             height={103}
             alt="Panda Cat Mememaker"
           />
-          <Text
+
+          {/* <Text
             sx={{
               bgGradient: "linear(to-r, #FEFFF7, #7CE94C))",
               bgClip: "text",
@@ -84,7 +85,7 @@ function Gallary() {
             }}
           >
             PANDA CAT MEMEMAKER
-          </Text>
+          </Text> */}
           <Text
             sx={{
               fontFamily: "Inika",
@@ -103,7 +104,21 @@ function Gallary() {
               maxWidth: "13.6rem",
             }}
           >
-            <Text>Create</Text>
+            <Text
+              sx={{
+                textShadow: `0px 0px 0 rgb(182,185,180),
+                -1px 1px 0 rgb(128,131,126),
+                -2px 2px 0 rgb(75,78,73),
+                -3px 3px 0 rgb(21,24,19),
+                -4px 4px  0 rgb(-32,-29,0),
+                -5px 5px 4px rgba(3,10,1,0.56),
+                -5px 5px 1px rgba(3,10,1,0.5),
+                0px 0px 4px rgba(3,10,1,.2)`,
+                color: "white",
+              }}
+            >
+              Create
+            </Text>
           </CustomButton>
           <Box
             sx={{

@@ -31,12 +31,21 @@ interface IProps {
 }
 
 export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const bg = useColorModeValue("#F2F2F2", "black");
+  // const [] = useSatet('')
 
-  const handlePlayVideo = () => {
-    onOpen();
+  const maskWord = (word: any) => {
+    // Check if word length is greater than 20
+    if (word.length > 30) {
+      // Extract first 20 characters and mask the rest
+      const firstPart = word.substring(0, 30);
+      const remainingLength = word.length - 30;
+      const maskedPart = ".".repeat(remainingLength);
+      return firstPart + maskedPart;
+    } else {
+      // Word length is 20 or less, return it as it is
+      return word;
+    }
   };
 
   return (
@@ -122,7 +131,22 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                 fontWeight="medium"
                 fontSize={{ base: "0.8rem", md: "1rem" }}
               >
-                <Text> Buy $PC</Text>
+                <Text
+                  sx={{
+                    textShadow: `0px 0px 0 rgb(182,185,180),
+                   -1px 1px 0 rgb(128,131,126),
+                   -2px 2px 0 rgb(75,78,73),
+                   -3px 3px 0 rgb(21,24,19),
+                   -4px 4px  0 rgb(-32,-29,0),
+                   -5px 5px 4px rgba(3,10,1,0.56),
+                   -5px 5px 1px rgba(3,10,1,0.5),
+                   0px 0px 4px rgba(3,10,1,.2)`,
+                    color: "white",
+                  }}
+                >
+                  {" "}
+                  Buy $PC
+                </Text>
               </CustomButton>
             </ScrollLink>
             <ScrollLink
@@ -140,7 +164,22 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                 fontSize={{ base: "0.8rem", md: "1rem" }}
                 variant={"gray"}
               >
-                <Text> Chart</Text>
+                <Text
+                  sx={{
+                    textShadow: `0px 0px 0 rgb(182,185,180),
+                   -1px 1px 0 rgb(128,131,126),
+                   -2px 2px 0 rgb(75,78,73),
+                   -3px 3px 0 rgb(21,24,19),
+                   -4px 4px  0 rgb(-32,-29,0),
+                   -5px 5px 4px rgba(3,10,1,0.56),
+                   -5px 5px 1px rgba(3,10,1,0.5),
+                   0px 0px 4px rgba(3,10,1,.2)`,
+                    color: "white",
+                  }}
+                >
+                  {" "}
+                  Chart
+                </Text>
               </CustomButton>
             </ScrollLink>
           </Flex>
@@ -179,7 +218,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
               color: "rgba(248, 248, 230, 1)",
             }}
           >
-            8HpGNw96EbNojdDLjLpPC6EQK....
+            {maskWord("CA: 8HpGNw96EbNojdDLjLpPC6EQKXB4aYvzFzYPqdT4UNu1")}
           </Text>
           <CustomButton
             sx={{
@@ -188,7 +227,21 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
             }}
             variant={"gray"}
           >
-            <Text>Copy</Text>
+            <Text
+              sx={{
+                textShadow: `0px 0px 0 rgb(182,185,180),
+              -1px 1px 0 rgb(128,131,126),
+              -2px 2px 0 rgb(75,78,73),
+              -3px 3px 0 rgb(21,24,19),
+              -4px 4px  0 rgb(-32,-29,0),
+              -5px 5px 4px rgba(3,10,1,0.56),
+              -5px 5px 1px rgba(3,10,1,0.5),
+              0px 0px 4px rgba(3,10,1,.2)`,
+                color: "white",
+              }}
+            >
+              Copy
+            </Text>
           </CustomButton>
         </Box>
       </Flex>
