@@ -2,19 +2,19 @@ export const navMenus: INav[] = [
   {
     id: "telegram",
     name: "Telegram",
-    path: "#telegram",
+    path: "#",
     type: "regular",
   },
   {
     id: "twitter",
     name: "Twitter",
-    path: "#twitter",
+    path: "#",
     type: "regular",
   },
   {
     id: "mememaker",
     name: "Mememaker",
     path: "/mememaker",
-    type: "mememaker",
-  }
+    type: "regular",
+  },
 ];

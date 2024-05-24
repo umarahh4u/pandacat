@@ -11,9 +11,6 @@ const BaseButton: React.FC<ButtonProps> = ({ children, ...props }) => (
     width="full"
     h="3.75rem"
     maxH="3.75rem"
-    // padding="2rem"
-
-    // borderRadius={10}
     boxShadow={"inset -17px -19px 2px -16px rgba(0,0,0,0.54)"}
     padding="0"
     border="1px solid black "
@@ -32,38 +29,16 @@ const CustomButton: React.FC<CustomButtonPropType> = ({
   children,
   ...props
 }) => {
-  const { colorMode } = useColorMode();
   switch (variant) {
-    case "outline":
-      return (
-        <BaseButton
-          border={`1px solid ${
-            colorMode === "light"
-              ? PandaCat.primary
-              : PandaCat.primaryDark
-          }`}
-          color={colorMode === "light" ? "primary" : "white"}
-          bgColor={colorMode === "light" ? "white" : "primaryDark"}
-          _hover={{
-            color: "white",
-            bgColor: "primary",
-          }}
-          _active={{
-            bgColor: "primaryLight",
-          }}
-          {...props}
-        >
-          {children}
-        </BaseButton>
-      );
     case "gray":
       return (
         <BaseButton
           color="white"
-          bgColor="gray.600"
+          transform={"skew(-15deg)"}
+          bgColor="#C7D6BB"
           _hover={{
             color: "gray.300",
-            bgColor: "gray.600",
+            bgColor: "#EEF3EB",
             border: "1px solid #696974",
           }}
           {...props}
@@ -76,7 +51,7 @@ const CustomButton: React.FC<CustomButtonPropType> = ({
         <BaseButton
           color="white"
           transform={"skew(-15deg)"}
-          bgColor={'rgba(98, 170, 67, 0.8)'}
+          bgColor={"rgba(98, 170, 67, 0.8)"}
           _hover={{
             opacity: 0.8,
           }}

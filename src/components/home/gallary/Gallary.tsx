@@ -7,14 +7,35 @@ import {
   Flex,
   Text,
   Box,
-  AspectRatio,
 } from "@chakra-ui/react";
-import { useAnimation, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { FaRegClock } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
+
+{
+  /* @ts-ignore */
+}
+import Carousel from "react-grid-carousel";
+
 import Reveal from "@/components/reveal";
 import CustomImage from "@/components/Image";
+import CustomButton from "@/components/Button";
+
+const sampleItems = [
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+  "/img/herobg.webp",
+];
 
 function Gallary() {
   const bg = useColorModeValue("#F2F2F2", "black");
@@ -26,7 +47,6 @@ function Gallary() {
       height={{ base: "auto", md: "auto" }}
       w="full"
       bgGradient={"linear(rgba(0, 0, 0, 1), rgba(130, 142, 98, 1))"}
-      pb="4rem"
       transition="background 0.2s"
       overflowY="hidden"
       position="relative"
@@ -59,11 +79,22 @@ function Gallary() {
             sx={{
               fontFamily: "Inika",
               fontWeight: 400,
-              fontSize: "1.",
+              fontSize: "1.6rem",
+              lineHeight: "31.27px",
+              color: "rgba(248, 248, 230, 1)",
+              maxWidth: "45rem",
+              textAlign: "center",
             }}
           >
             Create cute customized memes of Panda Cat to using our meme maker
           </Text>
+          <CustomButton
+            sx={{
+              maxWidth: "13.6rem",
+            }}
+          >
+            <Text>Create</Text>
+          </CustomButton>
           <Box
             sx={{
               display: "flex",
@@ -71,10 +102,40 @@ function Gallary() {
               width: "100%",
             }}
           >
-            <Text>Test</Text>
+            {/* <Text>Test</Text> */}
           </Box>
         </Flex>
       </Reveal>
+      <Carousel
+        rows={2}
+        cols={6}
+        gap={15}
+        hideArrow={true}
+        loop
+        autoplay={1000}
+      >
+        {sampleItems &&
+          sampleItems.length > 0 &&
+          sampleItems.map((item, i) => (
+            <Carousel.Item
+              sx={{
+                transform: "skew(-15deg)",
+              }}
+              key={`item_${i}`}
+            >
+              <Box
+                sx={{
+                  transform: "skew(-15deg)",
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                  width: "full",
+                }}
+              >
+                <CustomImage src={item} width={289} height={210} fill />
+              </Box>
+            </Carousel.Item>
+          ))}
+      </Carousel>
     </chakra.div>
   );
 }

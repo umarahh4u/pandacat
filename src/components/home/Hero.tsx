@@ -33,13 +33,9 @@ interface IProps {
 export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { toggleColorMode: toggleMode, colorMode } = useColorMode();
-  const [video, setVideo] = useState<any>(false);
-
   const bg = useColorModeValue("#F2F2F2", "black");
 
   const handlePlayVideo = () => {
-    setVideo(true);
     onOpen();
   };
 
@@ -92,7 +88,6 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                 textAlign={{ base: "start", md: "justify" }}
                 fontSize={{ base: "1rem", md: "1.37rem" }}
                 fontWeight={"medium"}
-                // color={basicTextRgba[colorMode]}
                 mb="3.1rem"
               >
                 <Text
@@ -100,6 +95,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                   fontFamily={"Inika"}
                   fontWeight={400}
                   fontSize={"2rem"}
+                  color="#F8F8E6"
                 >
                   The cutest cat on solana Network
                 </Text>
@@ -123,19 +119,26 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                 mr="1.81rem"
                 w="10rem"
                 h="4rem"
-                borderRadius={"10px 0px 10px 10px"}
                 fontWeight="medium"
                 fontSize={{ base: "0.8rem", md: "1rem" }}
               >
                 <Text> Buy $PC</Text>
               </CustomButton>
+            </ScrollLink>
+            <ScrollLink
+              to={"services"}
+              spy={true}
+              smooth={true}
+              offset={-100}
+              duration={500}
+            >
               <CustomButton
                 mr="1.81rem"
                 w="10rem"
                 h="4rem"
-                borderRadius={"10px 0px 10px 10px"}
                 fontWeight="medium"
                 fontSize={{ base: "0.8rem", md: "1rem" }}
+                variant={"gray"}
               >
                 <Text> Chart</Text>
               </CustomButton>
@@ -183,6 +186,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
               width: "5rem",
               height: "3rem",
             }}
+            variant={"gray"}
           >
             <Text>Copy</Text>
           </CustomButton>

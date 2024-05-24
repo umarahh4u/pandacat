@@ -1,5 +1,5 @@
 {
-  "name": "danabu",
+  "name": "panda cat",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,6 +17,8 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
+    "react-grid-carousel": "^1.0.1",
     "react-icons": "^4.12.0",
     "react-intersection-observer": "^9.5.3",
     "react-multi-carousel": "^2.8.4",
