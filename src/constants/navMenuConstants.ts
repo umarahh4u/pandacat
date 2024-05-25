@@ -7,7 +7,7 @@ export const navMenus: INav[] = [
   },
   {
     id: "twitter",
-    name: "Twitter",
+    name: "X (twitter)",
     path: "#",
     type: "regular",
   },

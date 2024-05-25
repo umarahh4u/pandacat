@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 
-import { chakra, Flex, Text, Box } from "@chakra-ui/react";
+import { chakra, Flex, Box } from "@chakra-ui/react";
 import { useAnimation, motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FaTwitter } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+
 import { FaTelegramPlane } from "react-icons/fa";
 
 import CustomImage from "@/components/Image";
@@ -19,23 +20,12 @@ function Footer() {
     }
   }, [controls, inView]);
 
-  const services = [
-    "Typesetting",
-    "Lamination",
-    "Binding",
-    "Printing",
-    "Online Registrations",
-  ];
-
   return (
     <chakra.div
       id="services"
       height={{ base: "auto", md: "auto" }}
       w="full"
       bgImage={"/img/bgleaf.svg"}
-      // bgGradient={
-      //   "linear(rgba(128, 140, 97, 1), rgba(1, 1, 1, 1), url('/img/bgleaf.svg'))"
-      // }
       pb={{ base: "0", md: "2rem" }}
       transition="background 0.2s"
       overflowY="hidden"
@@ -48,7 +38,6 @@ function Footer() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      // position='relative'
     >
       <chakra.div
         sx={{
@@ -57,7 +46,6 @@ function Footer() {
           w: "full",
           opacity: 0.8,
           position: "absolute",
-          // bg: "red",
           height: "100%",
         }}
       ></chakra.div>
@@ -106,7 +94,7 @@ function Footer() {
                 maxW: "3rem",
               }}
             >
-              <FaTwitter cursor="pointer" color="white" fontSize={"1.5rem"} />
+              <FaXTwitter cursor="pointer" color="white" fontSize={"1.5rem"} />
               <FaTelegramPlane
                 cursor="pointer"
                 color="white"

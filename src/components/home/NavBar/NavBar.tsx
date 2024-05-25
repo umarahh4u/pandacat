@@ -134,9 +134,8 @@ const NavBar = ({ menus, canStick }: IProps) => {
             ))}
 
           <CustomButton
-            sx={{
-              maxW: "9rem",
-            }}
+            w={{ base: "7rem", md: "10rem" }}
+            h={{ base: "3rem", md: "3.5rem" }}
           >
             <Text
               sx={{
@@ -149,6 +148,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
              -5px 5px 1px rgba(3,10,1,0.5),
              0px 0px 4px rgba(3,10,1,.2)`,
                 color: "white",
+                fontSize: { base: "1rem", md: "1.2rem" },
               }}
             >
               Buy $PC
@@ -188,8 +188,8 @@ const NavBar = ({ menus, canStick }: IProps) => {
                 <Image
                   src="/logo.webp"
                   alt="panda cat logo"
-                  width={"207px"}
-                  height={"68px"}
+                  width={{ base: "150px", md: "207px" }}
+                  height={{ base: "40px", md: "68px" }}
                   padding="11px, 0px, 11px, 0px"
                 />
               </HStack>
@@ -226,9 +226,12 @@ const NavBar = ({ menus, canStick }: IProps) => {
           <Flex align="center" color="gray.400">
             {menus && menus.length > 0 && (
               <HStack spacing="5" display={["none", "none", "flex", "flex"]}>
-                <CustomButton width={"200px"}>
+                <CustomButton
+                  w={{ base: "7rem", md: "10rem" }}
+                  h={{ base: "3rem", md: "3.5rem" }}
+                >
                   <Text
-                    fontSize={"1.5rem"}
+                    fontSize={{ base: "1.2rem", md: "1.5rem" }}
                     letterSpacing={"-3.5%"}
                     color="rgba(254, 253, 251, 1)"
                     fontFamily={"Lilita One"}

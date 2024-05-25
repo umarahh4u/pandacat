@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import {
   chakra,
-  useColorMode,
-  useColorModeValue,
   Flex,
   Text,
   Box,
-  SimpleGrid,
+  Grid,
+  GridItem,
+  Image,
 } from "@chakra-ui/react";
 
 import Reveal from "@/components/reveal";
-import CustomImage from "@/components/Image";
 import CustomButton from "@/components/Button";
 
 const sampleItems = [
@@ -28,9 +27,6 @@ const sampleItems = [
 ];
 
 function Gallary() {
-  const bg = useColorModeValue("#F2F2F2", "black");
-  const { colorMode } = useColorMode();
-
   return (
     <chakra.div
       id="contact"
@@ -59,11 +55,14 @@ function Gallary() {
           mt="3.5rem"
           gap="2rem"
         >
-          <CustomImage
+          <Image
             src="/img/pandamaker.svg"
-            width={810}
-            height={103}
+            width={{ base: 450, md: 810 }}
+            height={{ base: 90, md: 103 }}
             alt="Panda Cat Mememaker"
+            sx={{
+              mb: "-1rem",
+            }}
           />
 
           {/* <Text
@@ -79,7 +78,7 @@ function Gallary() {
             -5px 5px 4px rgba(24,87,9,0.43),
             -5px 5px 1px rgba(24,87,9,0.5),
             0px 0px 4px rgba(24,87,9,.2);`,
-              fontSize: "4rem",
+              fontSize: ["2rem", "4rem"],
               fontFamily: "Chelsea Market",
               fontWeight: 400,
             }}
@@ -100,9 +99,8 @@ function Gallary() {
             Create cute customized memes of Panda Cat to using our meme maker
           </Text>
           <CustomButton
-            sx={{
-              maxWidth: "13.6rem",
-            }}
+            w={{ base: "7rem", md: "10rem" }}
+            h={{ base: "3rem", md: "3.5rem" }}
           >
             <Text
               sx={{
@@ -115,6 +113,7 @@ function Gallary() {
                 -5px 5px 1px rgba(3,10,1,0.5),
                 0px 0px 4px rgba(3,10,1,.2)`,
                 color: "white",
+                fontSize: { base: "1rem", md: "1.2rem" },
               }}
             >
               Create
@@ -126,38 +125,46 @@ function Gallary() {
               justifyContent: "space-between",
               width: "100%",
             }}
-          >
-            {/* <Text>Test</Text> */}
-          </Box>
+          ></Box>
         </Flex>
       </Reveal>
       <Box
         sx={{
           w: "full",
-          maxH: "28rem",
-          // minH: "20rem",
           overflowY: "scroll",
+          overfloX: "scroll",
           mx: "auto",
         }}
       >
-        <SimpleGrid minChildWidth="250px" spacing="10px">
+        <Grid
+          templateColumns="repeat(5, 1fr)"
+          gap={2}
+          w="100%"
+          templateRows="repeat(2, 1fr)"
+        >
           {sampleItems &&
             sampleItems.length > 0 &&
             sampleItems.map((item, i) => (
-              <Box
+              <GridItem
                 sx={{
                   transform: "skew(-15deg)",
                 }}
                 key={`item_${i}`}
-                maxH="244px"
-                maxWidth={"320px"}
+                w={["135px", "135px", "244px", "289px"]}
+                h={["114px", "114px", "244px", "244px"]}
                 borderRadius="5px"
                 overflow="hidden"
               >
-                <CustomImage src={item} width={320} height={210} fill />
-              </Box>
+                <Image
+                  src={item}
+                  w={["135px", "135px", "244px", "289px"]}
+                  h={["114px", "114px", "244px", "244px"]}
+                  alt="pandas images"
+                  transform={"skew(15deg)"}
+                />
+              </GridItem>
             ))}
-        </SimpleGrid>
+        </Grid>
       </Box>
     </chakra.div>
   );

@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { chakra, Box, Text, Divider, SimpleGrid, Flex } from "@chakra-ui/react";
+import {
+  chakra,
+  Box,
+  Text,
+  Divider,
+  Flex,
+  Grid,
+  GridItem,
+  Image,
+} from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import { CiFileOn } from "react-icons/ci";
 import { IoIosCheckbox } from "react-icons/io";
@@ -15,47 +24,42 @@ import CustomButton from "@/components/Button";
 const imageList = [
   {
     id: 1,
-    url: "/img/herobg.webp",
+    url: "/img/mem1.png",
     checked: false,
   },
   {
     id: 2,
-    url: "/img/herobg.webp",
+    url: "/img/mem2.png",
     checked: false,
   },
   {
     id: 3,
-    url: "/img/herobg.webp",
+    url: "/img/mem3.png",
     checked: false,
   },
   {
     id: 4,
-    url: "",
+    url: "/img/mem4.png",
     checked: false,
   },
   {
     id: 5,
-    url: "",
+    url: "/img/mem5.png",
     checked: false,
   },
   {
     id: 6,
-    url: "",
+    url: "/img/mem6.png",
     checked: false,
   },
   {
     id: 7,
-    url: "",
+    url: "/img/mem1.png",
     checked: false,
   },
   {
     id: 8,
-    url: "",
-    checked: false,
-  },
-  {
-    id: 9,
-    url: "",
+    url: "/img/mem2.png",
     checked: false,
   },
 ];
@@ -154,7 +158,7 @@ function page() {
         >
           <Text
             sx={{
-              fontSize: "2rem",
+              fontSize: { base: "1.3rem", md: "1.8rem" },
               fontWeight: 400,
               fontFamily: "Inika",
               lineHeight: "28px",
@@ -166,7 +170,7 @@ function page() {
           </Text>
           <Text
             sx={{
-              fontSize: "1rem",
+              fontSize: { base: "0.8rem", md: "1rem" },
               fontWeight: 400,
               fontFamily: "Inika",
               color: "#979696",
@@ -195,7 +199,13 @@ function page() {
             >
               <input {...getInputProps()} />
               {isDragActive ? (
-                <Text>Drop file here</Text>
+                <Text
+                  sx={{
+                    fontSize: { base: "0.8rem", md: "1rem" },
+                  }}
+                >
+                  Drop file here
+                </Text>
               ) : (
                 <>
                   {selectedFiles.length > 0 ? (
@@ -206,22 +216,19 @@ function page() {
                           src={file?.preview}
                           width={147}
                           height={120}
-                          // onLoad={() => {
-                          //   URL.revokeObjectURL(selectedFiles[0]?.preview);
-                          // }}
                         />
                       </>
                     ))
                   ) : (
                     <>
                       <CiFileOn
-                        fontSize={"2rem"}
                         color="white"
                         cursor={"pointer"}
+                        fontSize="1.5rem"
                       />
                       <Text
                         sx={{
-                          fontSize: "1rem",
+                          fontSize: { base: "0.8rem", md: "1rem" },
                           color: "#8D8D8D",
                           fontFamily: "Inika",
                           textAlign: "center",
@@ -234,6 +241,7 @@ function page() {
                             color: "#9BDF6D",
                             fontWeight: 700,
                             fontFamily: "inherit",
+                            fontSize: { base: "0.8rem", md: "1rem" },
                           }}
                         >
                           Click to upload
@@ -252,7 +260,7 @@ function page() {
           <Divider mb="1.2rem" />
           <Text
             sx={{
-              fontSize: "1.25rem",
+              fontSize: { base: "1.1rem", md: "1.25rem" },
               fontFamily: "Inika",
               lineHeight: "28px",
               fontWeight: 400,
@@ -272,24 +280,34 @@ function page() {
             }}
           >
             {firstSTep === false ? (
-              <SimpleGrid minChildWidth="250px" spacing="15px">
+              <Grid
+                templateColumns={{
+                  base: "repeat(3, 1fr)",
+                  md: "repeat(4, 1fr)",
+                }}
+                gap={2}
+                w="100%"
+                templateRows="repeat(2, 1fr)"
+              >
                 {imageSelect &&
                   imageSelect.length > 0 &&
                   imageSelect.map((image) => (
-                    <Box
+                    <GridItem
                       key={image.id}
                       sx={{
                         position: "relative",
                       }}
                       cursor={"pointer"}
                       onClick={(e: any) => toggleSelectImage(e, image)}
+                      width={["180px", "200px", "220px", "289px"]}
+                      height={["170px", "198px", "198px", "200px"]}
                     >
                       {image.checked === false ? (
                         <></>
                       ) : (
                         <Box
                           position="absolute"
-                          right="30px"
+                          right="10px"
                           top="10px"
                           zIndex={5}
                         >
@@ -300,15 +318,15 @@ function page() {
                         </Box>
                       )}
 
-                      <CustomImage
+                      <Image
                         src={image.url}
-                        width={250}
-                        height={80}
+                        width={["180px", "200px", "211px", "289px"]}
+                        height={["170px", "198px", "198px", "200px"]}
                         alt="images"
                       />
-                    </Box>
+                    </GridItem>
                   ))}
-              </SimpleGrid>
+              </Grid>
             ) : (
               ""
             )}
@@ -322,27 +340,61 @@ function page() {
             {!!firstSTep && (
               <CustomButton
                 sx={{
-                  maxW: "13rem",
                   alignSelf: "right",
                 }}
+                w={{ base: "8rem", md: "13rem" }}
+                h={{ base: "3rem", md: "3.5rem" }}
+                p="0.3rem"
                 variant={"gray"}
                 onClick={handlePrevious}
               >
-                Back
+                <Text
+                  sx={{
+                    textShadow: `0px 0px 0 rgb(182,185,180),
+                   -1px 1px 0 rgb(128,131,126),
+                   -2px 2px 0 rgb(75,78,73),
+                   -3px 3px 0 rgb(21,24,19),
+                   -4px 4px  0 rgb(-32,-29,0),
+                   -5px 5px 4px rgba(3,10,1,0.56),
+                   -5px 5px 1px rgba(3,10,1,0.5),
+                   0px 0px 4px rgba(3,10,1,.2)`,
+                    color: "white",
+                    fontSize: { base: "0.8rem", md: "1.2rem" },
+                  }}
+                >
+                  Back
+                </Text>
               </CustomButton>
             )}
 
             <CustomButton
               sx={{
-                maxW: "13rem",
                 alignSelf: "right",
               }}
+              w={{ base: "8rem", md: "13rem" }}
+              h={{ base: "3rem", md: "3.5rem" }}
+              p="0.3rem"
               onClick={(e) => {
                 e.preventDefault();
                 handleGenerateMeme();
               }}
             >
-              {firstSTep === false ? "Generate meme" : "Download"}
+              <Text
+                sx={{
+                  textShadow: `0px 0px 0 rgb(182,185,180),
+                   -1px 1px 0 rgb(128,131,126),
+                   -2px 2px 0 rgb(75,78,73),
+                   -3px 3px 0 rgb(21,24,19),
+                   -4px 4px  0 rgb(-32,-29,0),
+                   -5px 5px 4px rgba(3,10,1,0.56),
+                   -5px 5px 1px rgba(3,10,1,0.5),
+                   0px 0px 4px rgba(3,10,1,.2)`,
+                  color: "white",
+                  fontSize: { base: "0.8rem", md: "1.2rem" },
+                }}
+              >
+                {firstSTep === false ? "Generate meme" : "Download"}
+              </Text>
             </CustomButton>
           </Flex>
         </Box>

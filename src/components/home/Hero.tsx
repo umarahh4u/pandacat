@@ -1,17 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import {
-  chakra,
-  Flex,
-  useColorModeValue,
-  useColorMode,
-  Text,
-  Heading,
-  Box,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { chakra, Flex, useColorModeValue, Text, Box } from "@chakra-ui/react";
 import { Link as ScrollLink } from "react-scroll";
 
 import CustomImage from "@/components/Image/CustomImage";
@@ -32,15 +23,14 @@ interface IProps {
 
 export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
   const bg = useColorModeValue("#F2F2F2", "black");
-  // const [] = useSatet('')
 
   const maskWord = (word: any) => {
     // Check if word length is greater than 20
-    if (word.length > 30) {
+    if (word.length > 20) {
       // Extract first 20 characters and mask the rest
-      const firstPart = word.substring(0, 30);
-      const remainingLength = word.length - 30;
-      const maskedPart = ".".repeat(remainingLength);
+      const firstPart = word.substring(0, 20);
+      // const remainingLength = word.length - 20;
+      const maskedPart = ".".repeat(3);
       return firstPart + maskedPart;
     } else {
       // Word length is 20 or less, return it as it is
@@ -97,13 +87,14 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                 textAlign={{ base: "start", md: "justify" }}
                 fontSize={{ base: "1rem", md: "1.37rem" }}
                 fontWeight={"medium"}
-                mb="3.1rem"
+                mb={"3rem"}
+                mt={{ base: "-2rem", md: "0" }}
               >
                 <Text
                   textAlign={{ base: "left", md: "left" }}
                   fontFamily={"Inika"}
                   fontWeight={400}
-                  fontSize={"2rem"}
+                  fontSize={{ base: "1.2rem", md: "2rem" }}
                   color="#F8F8E6"
                 >
                   The cutest cat on solana Network
@@ -117,23 +108,15 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
             justifyContent={{ base: "start", md: "start" }}
             mb="5rem"
           >
-            <ScrollLink
-              to={"services"}
-              spy={true}
-              smooth={true}
-              offset={-100}
-              duration={500}
+            <CustomButton
+              mr="1.81rem"
+              w={{ base: "7rem", md: "10rem" }}
+              h={{ base: "3rem", md: "3.5rem" }}
+              fontWeight="medium"
             >
-              <CustomButton
-                mr="1.81rem"
-                w="10rem"
-                h="4rem"
-                fontWeight="medium"
-                fontSize={{ base: "0.8rem", md: "1rem" }}
-              >
-                <Text
-                  sx={{
-                    textShadow: `0px 0px 0 rgb(182,185,180),
+              <Text
+                sx={{
+                  textShadow: `0px 0px 0 rgb(182,185,180),
                    -1px 1px 0 rgb(128,131,126),
                    -2px 2px 0 rgb(75,78,73),
                    -3px 3px 0 rgb(21,24,19),
@@ -141,32 +124,24 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                    -5px 5px 4px rgba(3,10,1,0.56),
                    -5px 5px 1px rgba(3,10,1,0.5),
                    0px 0px 4px rgba(3,10,1,.2)`,
-                    color: "white",
-                  }}
-                >
-                  {" "}
-                  Buy $PC
-                </Text>
-              </CustomButton>
-            </ScrollLink>
-            <ScrollLink
-              to={"services"}
-              spy={true}
-              smooth={true}
-              offset={-100}
-              duration={500}
-            >
-              <CustomButton
-                mr="1.81rem"
-                w="10rem"
-                h="4rem"
-                fontWeight="medium"
-                fontSize={{ base: "0.8rem", md: "1rem" }}
-                variant={"gray"}
+                  color: "white",
+                  fontSize: { base: "1rem", md: "1.2rem" },
+                }}
               >
-                <Text
-                  sx={{
-                    textShadow: `0px 0px 0 rgb(182,185,180),
+                Buy $PC
+              </Text>
+            </CustomButton>
+
+            <CustomButton
+              mr="1.81rem"
+              w={{ base: "7rem", md: "10rem" }}
+              h={{ base: "3rem", md: "3.5rem" }}
+              fontWeight="medium"
+              variant={"gray"}
+            >
+              <Text
+                sx={{
+                  textShadow: `0px 0px 0 rgb(182,185,180),
                    -1px 1px 0 rgb(128,131,126),
                    -2px 2px 0 rgb(75,78,73),
                    -3px 3px 0 rgb(21,24,19),
@@ -174,14 +149,13 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                    -5px 5px 4px rgba(3,10,1,0.56),
                    -5px 5px 1px rgba(3,10,1,0.5),
                    0px 0px 4px rgba(3,10,1,.2)`,
-                    color: "white",
-                  }}
-                >
-                  {" "}
-                  Chart
-                </Text>
-              </CustomButton>
-            </ScrollLink>
+                  color: "white",
+                  fontSize: { base: "1rem", md: "1.2rem" },
+                }}
+              >
+                Chart
+              </Text>
+            </CustomButton>
           </Flex>
         </Flex>
         <Flex
@@ -195,9 +169,9 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
 
         <Box
           sx={{
-            maxW: "31rem",
+            maxW: "25rem",
             width: "100%",
-            h: "4rem",
+            h: "3.5rem",
             p: "1rem",
             display: "flex",
             gap: "11px",
@@ -208,22 +182,23 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
             ml: "auto",
             border: "1px solid white",
             transform: "skew(-15deg)",
+            overflow: "hidden",
           }}
         >
           <Text
             sx={{
-              fontSize: "1rem",
+              fontSize: ["0.7rem", "1rem"],
               fontWeight: 400,
               fontFamily: "Inika",
               color: "rgba(248, 248, 230, 1)",
             }}
           >
-            {maskWord("CA: 8HpGNw96EbNojdDLjLpPC6EQKXB4aYvzFzYPqdT4UNu1")}
+            {maskWord("CA:8HpGNw96EbNojdDLjLpPC6EQKXB4aYvzFzYPqdT4UNu1")}
           </Text>
           <CustomButton
             sx={{
-              width: "5rem",
-              height: "3rem",
+              width: "8rem",
+              height: { base: "3rem", md: "3rem" },
             }}
             variant={"gray"}
           >
@@ -238,6 +213,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
               -5px 5px 1px rgba(3,10,1,0.5),
               0px 0px 4px rgba(3,10,1,.2)`,
                 color: "white",
+                fontSize: { base: "1rem", md: "1.2rem" },
               }}
             >
               Copy
