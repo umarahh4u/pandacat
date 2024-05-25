@@ -203,7 +203,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
               <HStack>
                 <Image
                   src={
-                    language === "ENG"
+                    language === "EN"
                       ? "/img/PandaCat.svg"
                       : "/img/pandacatchina.svg"
                   }
