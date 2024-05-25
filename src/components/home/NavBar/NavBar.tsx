@@ -88,9 +88,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
         >
           <Image
             src={
-              language === "ENG"
-                ? "/img/PandaCat.svg"
-                : "/img/pandacatchina.svg"
+              language === "EN" ? "/img/PandaCat.svg" : "/img/pandacatchina.svg"
             }
             alt="panda cat image"
             width={{ base: "100px", md: "110px" }}
