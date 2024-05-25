@@ -48,7 +48,7 @@ function Reveal({ children, width = "fit-content" }: Props) {
         }}
         initial="hidden"
         animate={slideControls}
-        transition={{ duration: 0.5, ease: "easeIn" }}
+        transition={{ duration: 0.3, ease: "easeIn" }}
         style={{
           position: "absolute",
           top: 4,

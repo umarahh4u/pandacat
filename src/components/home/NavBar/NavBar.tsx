@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   chakra,
   HStack,
@@ -27,6 +27,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
 
 import CustomButton from "@/components/Button";
+import { LanguageContext } from "src/contexts/languageContext";
 
 type Menu = {
   id: string;
@@ -47,9 +48,30 @@ const NavBar = ({ menus, canStick }: IProps) => {
     onClose: onCloseNav,
   } = useDisclosure();
 
+  // let defaultLan = 'ENG'
+
+  const [language, setLanguage] = useState<any>("EN");
+
+  LanguageContext;
+
+  useEffect(() => {
+    if (language == undefined) {
+      setLanguage("EN");
+    }
+    window.localStorage.setItem("language", language);
+    const lan = window.localStorage.getItem("language");
+    setLanguage(lan);
+    process.env.PANDA_CAT_LANG = language;
+  }, [language]);
+
   const ref = React.useRef<any>();
 
   const router = useRouter();
+
+  const handleSelectLanguage = (e: any) => {
+    e.preventDefault();
+    setLanguage(e.target.textContent);
+  };
 
   const MobileNavContent = (
     <Drawer placement={"top"} onClose={onCloseNav} isOpen={isOpenNav}>
@@ -65,7 +87,11 @@ const NavBar = ({ menus, canStick }: IProps) => {
           px="2.5rem"
         >
           <Image
-            src="/img/PandaCat.svg"
+            src={
+              language === "ENG"
+                ? "/img/PandaCat.svg"
+                : "/img/pandacatchina.svg"
+            }
             alt="panda cat image"
             width={{ base: "100px", md: "110px" }}
             height={{ base: "30px", md: "39px" }}
@@ -178,7 +204,11 @@ const NavBar = ({ menus, canStick }: IProps) => {
             >
               <HStack>
                 <Image
-                  src="/logo.webp"
+                  src={
+                    language === "ENG"
+                      ? "/img/PandaCat.svg"
+                      : "/img/pandacatchina.svg"
+                  }
                   alt="panda cat logo"
                   width={{ base: "150px", md: "207px" }}
                   height={{ base: "40px", md: "68px" }}
@@ -234,11 +264,11 @@ const NavBar = ({ menus, canStick }: IProps) => {
                 rightIcon={<IoChevronDown />}
                 as={Button}
               >
-                ENG
+                {language}
               </MenuButton>
               <MenuList>
-                <MenuItem>ENG</MenuItem>
-                <MenuItem>CHINA</MenuItem>
+                <MenuItem onClick={(e) => handleSelectLanguage(e)}>EN</MenuItem>
+                <MenuItem onClick={(e) => handleSelectLanguage(e)}>ZH</MenuItem>
               </MenuList>
             </Menu>
             {menus && menus.length > 0 && (

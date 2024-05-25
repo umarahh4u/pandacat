@@ -27,6 +27,8 @@ const sampleItems = [
 ];
 
 function Gallary() {
+  const language = process.env.PANDA_CAT_LANG;
+
   return (
     <chakra.div
       id="contact"
@@ -56,7 +58,11 @@ function Gallary() {
           gap="2rem"
         >
           <Image
-            src="/img/pandamaker.svg"
+            src={
+              language === "EN"
+                ? "/img/pandamaker.svg"
+                : "/img/pandacatmemechina.svg"
+            }
             width={{ base: 450, md: 810 }}
             height={{ base: 90, md: 103 }}
             alt="Panda Cat Mememaker"

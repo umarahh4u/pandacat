@@ -14,6 +14,8 @@ function Footer() {
   const controls = useAnimation();
   const { inView, ref } = useInView();
 
+  const language = process.env.PANDA_CAT_LANG;
+
   useEffect(() => {
     if (inView) {
       controls.start("visible");
@@ -79,7 +81,11 @@ function Footer() {
             }}
           >
             <CustomImage
-              src="/logo.webp"
+              src={
+                language === "EN"
+                  ? "/img/PandaCat.svg"
+                  : "/img/pandacatchina.svg"
+              }
               alt="panda cat logo"
               width={113}
               height={25}

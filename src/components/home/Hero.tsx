@@ -23,6 +23,7 @@ interface IProps {
 
 export const Hero = ({ triggerNav, menus }: IProps) => {
   const bg = useColorModeValue("#F2F2F2", "black");
+  const language = process.env.PANDA_CAT_LANG;
 
   const maskWord = (word: any) => {
     // Check if word length is greater than 20
@@ -77,7 +78,11 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
               alignItems={{ base: "start", md: "start" }}
             >
               <Image
-                src="/img/PandaCat.svg"
+                src={
+                  language === "EN"
+                    ? "/img/PandaCat.svg"
+                    : "/img/pandacatchina.svg"
+                }
                 alt="Panda Cat Image"
                 width={{ base: "auto", md: "845px" }}
                 height={{ base: "auto", md: "188px" }}
