@@ -3,12 +3,11 @@
 import { useState, useEffect } from "react";
 
 import { Hero } from "@/components/home/Hero";
-import { heroHeading } from "@/constants/heroTextConstants";
 import { navMenus } from "@/constants/navMenuConstants";
 import Gallary from "@/components/home/gallary";
 import Footer from "@/components/home/footer";
 
-const MAX_VIEWPORT: number = 10;
+const MAX_VIEWPORT: number = 150;
 
 export default function Home() {
   const [triggerNav, setTriggerNav] = useState<boolean>(false);
@@ -16,12 +15,13 @@ export default function Home() {
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
+
     if (currentScrollY > MAX_VIEWPORT) {
-      setTriggerNav(false);
+      setTriggerNav(true);
     }
 
     if (currentScrollY < MAX_VIEWPORT) {
-      setTriggerNav(true);
+      setTriggerNav(false);
     }
   };
 
@@ -38,12 +38,7 @@ export default function Home() {
 
   return (
     <>
-      <Hero
-        menus={navMenus}
-        canStick={triggerNav}
-        triggerNav={triggerNav}
-        heroText={heroHeading}
-      />
+      <Hero menus={navMenus} canStick={triggerNav} triggerNav={triggerNav} />
       <Gallary />
       <Footer />
     </>

@@ -2,26 +2,26 @@
 
 import React from "react";
 
-import { chakra, Flex, useColorModeValue, Text, Box } from "@chakra-ui/react";
-import { Link as ScrollLink } from "react-scroll";
+import {
+  chakra,
+  Flex,
+  useColorModeValue,
+  Text,
+  Box,
+  Image,
+} from "@chakra-ui/react";
 
-import CustomImage from "@/components/Image/CustomImage";
 import NavBar from "@/components/home/NavBar";
 import CustomButton from "../Button";
 import Reveal from "../reveal";
-// import PlayVideo from '../VideoModal/PlayVideo'
 
 interface IProps {
   menus: INav[];
   canStick: boolean;
   triggerNav: boolean;
-  heroText: {
-    heading: string;
-    paragraphFirst: string;
-  };
 }
 
-export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
+export const Hero = ({ triggerNav, menus }: IProps) => {
   const bg = useColorModeValue("#F2F2F2", "black");
 
   const maskWord = (word: any) => {
@@ -76,11 +76,11 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
               flexWrap="wrap"
               alignItems={{ base: "start", md: "start" }}
             >
-              <CustomImage
+              <Image
                 src="/img/PandaCat.svg"
                 alt="Panda Cat Image"
-                width={845}
-                height={188}
+                width={{ base: "auto", md: "845px" }}
+                height={{ base: "auto", md: "188px" }}
               />
               <Box
                 maxW={{ base: "container.sm", md: "31.25rem" }}
@@ -88,7 +88,6 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                 fontSize={{ base: "1rem", md: "1.37rem" }}
                 fontWeight={"medium"}
                 mb={"3rem"}
-                mt={{ base: "-2rem", md: "0" }}
               >
                 <Text
                   textAlign={{ base: "left", md: "left" }}
@@ -96,6 +95,7 @@ export const Hero = ({ heroText, triggerNav, menus }: IProps) => {
                   fontWeight={400}
                   fontSize={{ base: "1.2rem", md: "2rem" }}
                   color="#F8F8E6"
+                  mt={{ base: "1rem", md: "0" }}
                 >
                   The cutest cat on solana Network
                 </Text>

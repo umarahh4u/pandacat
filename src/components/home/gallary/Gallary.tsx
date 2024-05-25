@@ -89,11 +89,12 @@ function Gallary() {
             sx={{
               fontFamily: "Inika",
               fontWeight: 400,
-              fontSize: "1.6rem",
+              fontSize: { base: "1.1rem", md: "1.6rem" },
               lineHeight: "31.27px",
               color: "rgba(248, 248, 230, 1)",
               maxWidth: "45rem",
               textAlign: "center",
+              mt: { base: "-1rem", md: "0" },
             }}
           >
             Create cute customized memes of Panda Cat to using our meme maker

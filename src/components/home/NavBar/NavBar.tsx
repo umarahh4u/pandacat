@@ -6,27 +6,27 @@ import {
   Link,
   Flex,
   IconButton,
-  useColorModeValue,
   useDisclosure,
   CloseButton,
-  Button,
-  useColorMode,
   Divider,
   Menu,
-  Image,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
+  MenuItem,
+  MenuButton,
+  MenuList,
   Text,
+  Image,
   Box,
+  Button,
 } from "@chakra-ui/react";
-import { Link as ScrollLink } from "react-scroll";
+import { IoChevronDown } from "react-icons/io5";
 
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaMoon, FaSun } from "react-icons/fa";
+
 import CustomButton from "@/components/Button";
-import CustomImage from "@/components/Image";
 
 type Menu = {
   id: string;
@@ -41,27 +41,14 @@ interface IProps {
 }
 
 const NavBar = ({ menus, canStick }: IProps) => {
-  const { toggleColorMode: toggleMode, colorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenNav,
     onOpen: onOpenNav,
     onClose: onCloseNav,
   } = useDisclosure();
 
-  const [help, setHelp] = useState<any>(false);
-  const text = useColorModeValue("dark", "light");
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun);
-  const bg = useColorModeValue("white", "black");
   const ref = React.useRef<any>();
 
-  const handleHelpModal = () => {
-    setHelp(true);
-    onOpen();
-    onCloseNav();
-  };
-
-  const cl = useColorModeValue("gray.800", "white");
   const router = useRouter();
 
   const MobileNavContent = (
@@ -77,7 +64,12 @@ const NavBar = ({ menus, canStick }: IProps) => {
           bg="transparent"
           px="2.5rem"
         >
-          <CustomImage src="/img/PandaCat.svg" width={110} height={39} />
+          <Image
+            src="/img/PandaCat.svg"
+            alt="panda cat image"
+            width={{ base: "100px", md: "110px" }}
+            height={{ base: "30px", md: "39px" }}
+          />
           <CloseButton
             aria-label="Close menu"
             justifySelf="end"
@@ -162,7 +154,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
     <chakra.header
       ref={ref}
       transition="all .3s ease-in-out"
-      bg={canStick ? "transparent" : "transparent"}
+      bg={canStick ? "#16161D" : "transparent"}
       w={"full"}
       ml="auto"
       position={"fixed"}
@@ -223,7 +215,32 @@ const NavBar = ({ menus, canStick }: IProps) => {
                 </Link>
               ))}
           </Flex>
-          <Flex align="center" color="gray.400">
+          <Flex align="center" color="gray.400" gap={"0.6rem"}>
+            <Menu>
+              <MenuButton
+                px={4}
+                py={2}
+                transition="all 0.2s"
+                borderRadius="md"
+                borderWidth="0px"
+                sx={{
+                  bg: "transparent",
+                  color: "rgba(248, 248, 230, 1)",
+                  fontSize: "1rem",
+                  fontFamily: "Chelsea Market",
+                  fontWeight: "normal",
+                }}
+                _hover={{ bg: "transparent" }}
+                rightIcon={<IoChevronDown />}
+                as={Button}
+              >
+                ENG
+              </MenuButton>
+              <MenuList>
+                <MenuItem>ENG</MenuItem>
+                <MenuItem>CHINA</MenuItem>
+              </MenuList>
+            </Menu>
             {menus && menus.length > 0 && (
               <HStack spacing="5" display={["none", "none", "flex", "flex"]}>
                 <CustomButton
