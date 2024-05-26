@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import {
   chakra,
   Flex,
@@ -10,6 +9,7 @@ import {
   Box,
   Image,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 import NavBar from "@/components/home/NavBar";
 import CustomButton from "../Button";
@@ -23,7 +23,7 @@ interface IProps {
 
 export const Hero = ({ triggerNav, menus }: IProps) => {
   const bg = useColorModeValue("#F2F2F2", "black");
-  const language = process.env.PANDA_CAT_LANG;
+  const { t, i18n } = useTranslation();
 
   const maskWord = (word: any) => {
     // Check if word length is greater than 20
@@ -79,13 +79,14 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
             >
               <Image
                 src={
-                  language === "EN"
+                  i18n.language === "en"
                     ? "/img/PandaCat.svg"
                     : "/img/pandacatchina.svg"
                 }
                 alt="Panda Cat Image"
                 width={{ base: "auto", md: "845px" }}
                 height={{ base: "auto", md: "188px" }}
+                ml={i18n.language === "en" ? "" : "-5.5rem"}
               />
               <Box
                 maxW={{ base: "container.sm", md: "31.25rem" }}
@@ -102,7 +103,7 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
                   color="#F8F8E6"
                   mt={{ base: "1rem", md: "0" }}
                 >
-                  The cutest cat on solana Network
+                  {t("main.header")}
                 </Text>
               </Box>
             </Flex>
@@ -133,7 +134,7 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
                   fontSize: { base: "1rem", md: "1.2rem" },
                 }}
               >
-                Buy $PC
+                {t("main.btn_save")}
               </Text>
             </CustomButton>
 
@@ -158,7 +159,7 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
                   fontSize: { base: "1rem", md: "1.2rem" },
                 }}
               >
-                Chart
+                {t("main.btn_chart")}
               </Text>
             </CustomButton>
           </Flex>
@@ -221,7 +222,7 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
                 fontSize: { base: "1rem", md: "1.2rem" },
               }}
             >
-              Copy
+              {t("main.btn_copy")}
             </Text>
           </CustomButton>
         </Box>

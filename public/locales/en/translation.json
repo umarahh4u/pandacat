@@ -1,0 +1,20 @@
+{
+  "main": {
+    "btn_save": "Buy $PC",
+    "btn_chart": "Chart",
+    "btn_copy": "Copy",
+    "btn_download": "Download",
+    "btn_create": "Create",
+    "btn_back": "Back",
+    "btn_generate_meme": "Generate Meme",
+    "header": "The cutest cat on solana Network",
+    "header_gallary": "Create cute customized memes of Panda Cat to using our meme maker",
+    "panda_cat_maker": "Panda Cat Meme Maker",
+    "preview": "Preview",
+    "current_date": "Today is {{date, DATE_LONG}}",
+    "meme_template": "Select Meme Template",
+    "meme_description": "Level up your crypto game with our meme-making platform.",
+    "click_to_upload": "Click to upload file",
+    "drag_drop_file": "or drag and drop"
+  }
+}

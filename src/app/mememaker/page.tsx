@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+
 import {
   chakra,
   Box,
@@ -11,6 +13,7 @@ import {
   GridItem,
   Image,
 } from "@chakra-ui/react";
+import "../i18n";
 import { useDropzone } from "react-dropzone";
 import { CiFileOn } from "react-icons/ci";
 import { IoIosCheckbox } from "react-icons/io";
@@ -70,6 +73,7 @@ function page() {
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [imageSelect, setImageSelect] = useState<any[]>([...imageList]);
   const [firstSTep, setFirstStep] = useState<boolean>(false);
+  const { t, i18n } = useTranslation();
 
   const handleGenerateMeme = () => {
     setFirstStep(true);
@@ -80,7 +84,6 @@ function page() {
   };
 
   const toggleSelectImage = (e: any, item: any) => {
-    console.log("eee", e, "item", item);
     if (e.type === "click") {
       setImageSelect(
         imageSelect.map((d) =>
@@ -166,7 +169,9 @@ function page() {
               mb: "0.6rem",
             }}
           >
-            {firstSTep === false ? " Panda Cat Meme Maker" : "Preview"}
+            {firstSTep === false
+              ? `${t("main.panda_cat_maker")}`
+              : `${t("main.preview")}`}
           </Text>
           <Text
             sx={{
@@ -177,10 +182,7 @@ function page() {
               mb: "1rem",
             }}
           >
-            {firstSTep === false
-              ? `Level up your crypto game with our meme-making platform. Creat
-            irresistible content to shill memecoins like a pro.`
-              : ""}
+            {firstSTep === false ? `${t("main.meme_description")}` : ""}
           </Text>
           {firstSTep === false ? (
             <Box
@@ -244,9 +246,10 @@ function page() {
                             fontSize: { base: "0.8rem", md: "1rem" },
                           }}
                         >
-                          Click to upload
+                          {t("main.click_to_upload")}
                         </Text>{" "}
-                        or drag and drop <br /> PNG, JPG or JPEG (max. 2mb)
+                        {t("main.drag_drop_file")} <br /> PNG, JPG or JPEG (max.
+                        2mb)
                       </Text>
                     </>
                   )}
@@ -268,7 +271,7 @@ function page() {
               mb: "1rem",
             }}
           >
-            {firstSTep === false ? " Select Meme Template" : ""}
+            {firstSTep === false ? `${t("main.meme_template")}` : ""}
           </Text>
           <Box
             sx={{
@@ -362,7 +365,7 @@ function page() {
                     fontSize: { base: "0.8rem", md: "1.2rem" },
                   }}
                 >
-                  Back
+                  {t("main.btn_back")}
                 </Text>
               </CustomButton>
             )}
@@ -393,7 +396,9 @@ function page() {
                   fontSize: { base: "0.8rem", md: "1.2rem" },
                 }}
               >
-                {firstSTep === false ? "Generate meme" : "Download"}
+                {firstSTep === false
+                  ? `${t("main.btn_generate_meme")}`
+                  : `${t("main.btn_download")}`}
               </Text>
             </CustomButton>
           </Flex>

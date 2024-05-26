@@ -1,5 +1,6 @@
 // app/layout.tsx
 import { Metadata } from "next";
+// import "./i18n";
 
 import { Providers } from "./providers";
 import { ColorModeScript } from "@chakra-ui/react";

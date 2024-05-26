@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useContext } from "react";
 import {
@@ -27,7 +29,13 @@ import { IoChevronDown } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
 
 import CustomButton from "@/components/Button";
-import { LanguageContext } from "src/contexts/languageContext";
+
+import { useTranslation } from "react-i18next";
+
+const locales: any = {
+  en: { title: "En" },
+  zh: { title: "Zh" },
+};
 
 type Menu = {
   id: string;
@@ -48,30 +56,11 @@ const NavBar = ({ menus, canStick }: IProps) => {
     onClose: onCloseNav,
   } = useDisclosure();
 
-  // let defaultLan = 'ENG'
-
-  const [language, setLanguage] = useState<any>("EN");
-
-  LanguageContext;
-
-  useEffect(() => {
-    if (language == undefined) {
-      setLanguage("EN");
-    }
-    window.localStorage.setItem("language", language);
-    const lan = window.localStorage.getItem("language");
-    setLanguage(lan);
-    process.env.PANDA_CAT_LANG = language;
-  }, [language]);
+  const { t, i18n } = useTranslation();
 
   const ref = React.useRef<any>();
 
   const router = useRouter();
-
-  const handleSelectLanguage = (e: any) => {
-    e.preventDefault();
-    setLanguage(e.target.textContent);
-  };
 
   const MobileNavContent = (
     <Drawer placement={"top"} onClose={onCloseNav} isOpen={isOpenNav}>
@@ -88,7 +77,9 @@ const NavBar = ({ menus, canStick }: IProps) => {
         >
           <Image
             src={
-              language === "EN" ? "/img/PandaCat.svg" : "/img/pandacatchina.svg"
+              i18n.language === "en"
+                ? "/img/PandaCat.svg"
+                : "/img/pandacatchina.svg"
             }
             alt="panda cat image"
             width={{ base: "100px", md: "110px" }}
@@ -167,7 +158,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
                 fontSize: { base: "1rem", md: "1.2rem" },
               }}
             >
-              Buy $PC
+              {t("main.btn_save")}
             </Text>
           </CustomButton>
         </DrawerBody>
@@ -203,7 +194,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
               <HStack>
                 <Image
                   src={
-                    language === "EN"
+                    i18n.language === "en"
                       ? "/img/PandaCat.svg"
                       : "/img/pandacatchina.svg"
                   }
@@ -262,11 +253,17 @@ const NavBar = ({ menus, canStick }: IProps) => {
                 rightIcon={<IoChevronDown />}
                 as={Button}
               >
-                {language}
+                {i18n.language}
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={(e) => handleSelectLanguage(e)}>EN</MenuItem>
-                <MenuItem onClick={(e) => handleSelectLanguage(e)}>ZH</MenuItem>
+                {Object.keys(locales).map((locale) => (
+                  <MenuItem
+                    key={locale}
+                    onClick={() => i18n.changeLanguage(locale)}
+                  >
+                    {locales[locale].title}
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
             {menus && menus.length > 0 && (
@@ -293,8 +290,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
                       color: "white",
                     }}
                   >
-                    {" "}
-                    Buy $PC
+                    {t("main.btn_save")}
                   </Text>
                 </CustomButton>
               </HStack>

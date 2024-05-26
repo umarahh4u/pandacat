@@ -1,5 +1,6 @@
 "use client";
 
+import "./i18n";
 import { useState, useEffect } from "react";
 
 import { Hero } from "@/components/home/Hero";

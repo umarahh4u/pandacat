@@ -9,6 +9,7 @@ import {
   GridItem,
   Image,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 import Reveal from "@/components/reveal";
 import CustomButton from "@/components/Button";
@@ -28,6 +29,7 @@ const sampleItems = [
 
 function Gallary() {
   const language = process.env.PANDA_CAT_LANG;
+  const { t, i18n } = useTranslation();
 
   return (
     <chakra.div
@@ -59,7 +61,7 @@ function Gallary() {
         >
           <Image
             src={
-              language === "EN"
+              i18n.language === "en"
                 ? "/img/pandamaker.svg"
                 : "/img/pandacatmemechina.svg"
             }
@@ -71,26 +73,6 @@ function Gallary() {
             }}
           />
 
-          {/* <Text
-            sx={{
-              bgGradient: "linear(to-r, #FEFFF7, #7CE94C))",
-              bgClip: "text",
-              color: "#7be94c",
-              textShadow: `0px 0px 0 rgb(75,185,28),
-            -1px 1px 0 rgb(28,138,0),
-            -2px 2px 0 rgb(-20,90,0),
-            -3px 3px 0 rgb(-68,42,0),
-            -4px 4px  0 rgb(-116,-6,0),
-            -5px 5px 4px rgba(24,87,9,0.43),
-            -5px 5px 1px rgba(24,87,9,0.5),
-            0px 0px 4px rgba(24,87,9,.2);`,
-              fontSize: ["2rem", "4rem"],
-              fontFamily: "Chelsea Market",
-              fontWeight: 400,
-            }}
-          >
-            PANDA CAT MEMEMAKER
-          </Text> */}
           <Text
             sx={{
               fontFamily: "Inika",
@@ -103,7 +85,7 @@ function Gallary() {
               mt: { base: "-1rem", md: "0" },
             }}
           >
-            Create cute customized memes of Panda Cat to using our meme maker
+            {t("main.header_gallary")}
           </Text>
           <CustomButton
             w={{ base: "7rem", md: "10rem" }}
@@ -123,7 +105,7 @@ function Gallary() {
                 fontSize: { base: "1rem", md: "1.2rem" },
               }}
             >
-              Create
+              {t("main.btn_create")}
             </Text>
           </CustomButton>
           <Box

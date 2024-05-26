@@ -1,0 +1,20 @@
+{
+  "main": {
+    "btn_save": "购买$PC",
+    "btn_chart": "图表",
+    "btn_copy": "复制",
+    "btn_download": "下载",
+    "btn_create": "创造",
+    "btn_back": "后退",
+    "btn_generate_meme": "生成模因",
+    "header": "solana 网络上最可爱的猫",
+    "header_gallary": "使用我们的表情包制作工具创建熊猫猫的可爱定制表情包",
+    "panda_cat_maker": "熊猫猫 Meme Maker",
+    "preview": "预览",
+    "current_date": "Today is {{date, DATE_LONG}}",
+    "meme_template": "选择模因模板",
+    "meme_description": "使用我们的模因制作平台升级您的加密游戏。",
+    "click_to_upload": "点击上传文件",
+    "drag_drop_file": "或拖放"
+  }
+}

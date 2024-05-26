@@ -4,6 +4,7 @@ import { chakra, Flex, Box } from "@chakra-ui/react";
 import { useAnimation, motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FaXTwitter } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 import { FaTelegramPlane } from "react-icons/fa";
 
@@ -13,8 +14,7 @@ import Reveal from "@/components/reveal";
 function Footer() {
   const controls = useAnimation();
   const { inView, ref } = useInView();
-
-  const language = process.env.PANDA_CAT_LANG;
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (inView) {
@@ -82,7 +82,7 @@ function Footer() {
           >
             <CustomImage
               src={
-                language === "EN"
+                i18n.language === "en"
                   ? "/img/PandaCat.svg"
                   : "/img/pandacatchina.svg"
               }
