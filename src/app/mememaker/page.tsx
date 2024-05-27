@@ -1,7 +1,10 @@
 "use client";
-
-import React, { useState, useEffect, useCallback } from "react";
+//@ts-nocheck
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { Rnd } from "react-rnd";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import {
   chakra,
@@ -11,7 +14,8 @@ import {
   Flex,
   Grid,
   GridItem,
-  Image,
+  Image as Images,
+  Container,
 } from "@chakra-ui/react";
 import "../i18n";
 import { useDropzone } from "react-dropzone";
@@ -67,13 +71,195 @@ const imageList = [
   },
 ];
 
+/* @ts-ignore */
+
+const DraggableImage = ({ src, rotation, onMouseDown }) => {
+  return (
+    <img
+      src={src}
+      alt="Default"
+      style={{
+        cursor: "move",
+        width: "100%",
+        height: "100%",
+        transform: `rotate(${rotation}deg)`,
+      }}
+      onMouseDown={onMouseDown}
+      onTouchStart={onMouseDown}
+      draggable={false} // Prevents default drag behavior
+    />
+  );
+};
+
+/* @ts-ignore */
 function page() {
   const [triggerNav, setTriggerNav] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [imageSelect, setImageSelect] = useState<any[]>([...imageList]);
   const [firstSTep, setFirstStep] = useState<boolean>(false);
+  const [imageBg, setImageBg] = useState<any[]>();
   const { t, i18n } = useTranslation();
+
+  const [defaultImage] = useState("/cat.png");
+  const [uploadedImage, setUploadedImage] = useState();
+  const [uploadedImageSize, setUploadedImageSize] = useState({
+    width: 0,
+    height: 0,
+  });
+  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const [size, setSize] = useState({ width: 100, height: 100 });
+  const [rotation, setRotation] = useState(0);
+  const [isRotating, setIsRotating] = useState(false);
+  const [initialAngle, setInitialAngle] = useState(0);
+  const [startAngle, setStartAngle] = useState(0);
+  const canvasRef = useRef(null);
+
+  const handleImageLoad = (e: any) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    const aspectRatio = naturalWidth / naturalHeight;
+
+    const maxWidth = window.innerWidth * 0.9;
+    const maxHeight = window.innerHeight * 0.8;
+
+    let width = naturalWidth;
+    let height = naturalHeight;
+
+    if (width > maxWidth || height > maxHeight) {
+      if (width / maxWidth > height / maxHeight) {
+        width = maxWidth;
+        height = width / aspectRatio;
+      } else {
+        height = maxHeight;
+        width = height * aspectRatio;
+      }
+    }
+
+    setUploadedImageSize({ width, height });
+  };
+
+  const handleMouseDown = (e: any) => {
+    e.preventDefault(); // Prevents default mouse down behavior
+    setIsRotating(false); // Stop rotation if any
+  };
+
+  const handleRotationStart = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsRotating(true);
+    const centerX = position.x + size.width / 2;
+    const centerY = position.y + size.height / 2;
+    const mouseX = e.clientX || (e.touches && e.touches[0].clientX);
+    const mouseY = e.clientY || (e.touches && e.touches[0].clientY);
+    const angle =
+      Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
+    setStartAngle(angle);
+    setInitialAngle(rotation);
+  };
+
+  const updateRotation = useCallback(
+    (mouseX: any, mouseY: any) => {
+      const centerX = position.x + size.width / 2;
+      const centerY = position.y + size.height / 2;
+      const angle =
+        Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
+      const newRotation = initialAngle + (angle - startAngle);
+      setRotation(newRotation);
+    },
+    [initialAngle, position.x, position.y, size.height, size.width, startAngle]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: any) => {
+      if (isRotating) {
+        const mouseX = e.clientX || (e.touches && e.touches[0].clientX);
+        const mouseY = e.clientY || (e.touches && e.touches[0].clientY);
+        requestAnimationFrame(() => updateRotation(mouseX, mouseY));
+      }
+    },
+    [isRotating, updateRotation]
+  );
+
+  const handleMouseUp = (e: any) => {
+    e.preventDefault(); // Prevents default mouse up behavior
+    setIsRotating(false);
+  };
+
+  useEffect(() => {
+    if (isRotating) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("touchmove", handleMouseMove);
+      window.addEventListener("touchend", handleMouseUp);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchend", handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchend", handleMouseUp);
+    };
+  }, [isRotating, handleMouseMove]);
+
+  const downloadBlendedImage = () => {
+    const canvas = canvasRef.current;
+    /* @ts-ignore */
+    const context = canvas.getContext("2d");
+
+    /* @ts-ignore */
+    canvas.width = uploadedImageSize.width;
+    /* @ts-ignore */
+    canvas.height = uploadedImageSize.height;
+
+    /* @ts-ignore */
+    let uploadedImg = new Image();
+    /* @ts-ignore */
+    uploadedImg.src = uploadedImage;
+    uploadedImg.onload = () => {
+      /* @ts-ignore */
+      context.drawImage(uploadedImg, 0, 0, canvas.width, canvas.height);
+
+      /* @ts-ignore */
+      let defaultImg = new Image();
+      defaultImg.src = defaultImage;
+      defaultImg.onload = () => {
+        context.save();
+        context.translate(
+          position.x + size.width / 2,
+          position.y + size.height / 2
+        );
+        context.rotate((rotation * Math.PI) / 180);
+        context.drawImage(
+          defaultImg,
+          -size.width / 2,
+          -size.height / 2,
+          size.width,
+          size.height
+        );
+        context.restore();
+
+        const link = document.createElement("a");
+        link.download = "blended-image.png";
+        /* @ts-ignore */
+        link.href = canvas.toDataURL();
+        link.click();
+      };
+    };
+  };
+
+  const calculateHandlePosition = () => {
+    const radius = Math.max(size.width, size.height) / 2 + 20; // 20 pixels away from the edge
+    const angleInRadians = rotation * (Math.PI / 180);
+    const x = Math.cos(angleInRadians) * radius;
+    const y = Math.sin(angleInRadians) * radius;
+    return { x, y };
+  };
+
+  const handlePosition = calculateHandlePosition();
 
   const handleGenerateMeme = () => {
     setFirstStep(true);
@@ -100,6 +286,10 @@ function page() {
   };
 
   useEffect(() => {
+    setImageBg(imageSelect.filter((img) => img.checked === true));
+  }, [imageSelect]);
+
+  useEffect(() => {
     setMounted(true);
   }, []);
 
@@ -113,11 +303,21 @@ function page() {
     setSelectedFiles(
       acceptedFiles.map((file: any) =>
         Object.assign(file, {
-          preview: URL.createObjectURL(file),
+          src: URL.createObjectURL(file),
         })
       )
     );
   }, []);
+
+  useEffect(() => {
+    if (selectedFiles[0]?.src) {
+      setUploadedImage(selectedFiles[0]?.src);
+    } else {
+      if (imageBg) {
+        setUploadedImage(imageBg[imageBg?.length - 1]?.url);
+      }
+    }
+  }, [selectedFiles, imageBg]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -211,11 +411,12 @@ function page() {
               ) : (
                 <>
                   {selectedFiles.length > 0 ? (
-                    selectedFiles.map((file) => (
+                    selectedFiles.map((file, i) => (
                       <>
                         <CustomImage
-                          key={file && file?.name}
-                          src={file?.preview}
+                          key={`list_${i}`}
+                          alt="uploaded image"
+                          src={file?.src}
                           width={147}
                           height={120}
                         />
@@ -321,7 +522,7 @@ function page() {
                         </Box>
                       )}
 
-                      <Image
+                      <Images
                         src={image.url}
                         width={["180px", "200px", "211px", "289px"]}
                         height={["170px", "198px", "198px", "200px"]}
@@ -331,7 +532,111 @@ function page() {
                   ))}
               </Grid>
             ) : (
-              ""
+              <>
+                <DndProvider backend={HTML5Backend}>
+                  <Container>
+                    <Box
+                      sx={{
+                        w: "full",
+                        h: "full",
+                      }}
+                    >
+                      {uploadedImage && (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            width: uploadedImageSize.width,
+                            margin: "0 auto",
+                            border: "2px solid #ccc",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <div
+                            style={{
+                              position: "relative",
+                              width: "100%",
+                              height: uploadedImageSize.height,
+                            }}
+                          >
+                            {/* upload image background  */}
+                            {/* {selectedFiles &&
+                                selectedFiles.length > 0 &&
+                                selectedFiles.map((img) => ( */}
+                            <img
+                              src={uploadedImage}
+                              alt="Uploaded"
+                              onLoad={handleImageLoad}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "contain",
+                                userSelect: "none", // Prevent text selection
+                              }}
+                            />
+                            {/* ))} */}
+
+                            <Rnd
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                transform: `rotate(${rotation}deg)`,
+                                border: "2px solid red",
+                                userSelect: "none", // Prevent text selection
+                              }}
+                              size={{
+                                width: size.width,
+                                height: size.height,
+                              }}
+                              position={position}
+                              onDragStop={(e, d) =>
+                                setPosition({ x: d.x, y: d.y })
+                              }
+                              onResizeStop={(
+                                e,
+                                direction,
+                                ref,
+                                delta,
+                                position
+                              ) => {
+                                setSize({
+                                  width: parseInt(ref.style.width, 10),
+                                  height: parseInt(ref.style.height, 10),
+                                });
+                                setPosition(position);
+                              }}
+                              bounds="parent"
+                            >
+                              <DraggableImage
+                                src={defaultImage}
+                                rotation={rotation}
+                                onMouseDown={handleMouseDown}
+                              />
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: `calc(50% - 10px + ${handlePosition.y}px)`,
+                                  left: `calc(50% - 10px + ${handlePosition.x}px)`,
+                                  width: 20,
+                                  height: 20,
+                                  backgroundColor: "blue",
+                                  borderRadius: "50%",
+                                  cursor: "pointer",
+                                }}
+                                onMouseDown={handleRotationStart}
+                                onTouchStart={handleRotationStart}
+                              />
+                            </Rnd>
+                          </div>
+                        </div>
+                      )}
+                    </Box>
+                    <canvas ref={canvasRef} style={{ display: "none" }} />
+                  </Container>
+                </DndProvider>
+              </>
             )}
           </Box>
           <Divider mb="1.5rem" />
@@ -379,7 +684,10 @@ function page() {
               p="0.3rem"
               onClick={(e) => {
                 e.preventDefault();
-                handleGenerateMeme();
+
+                firstSTep === false
+                  ? handleGenerateMeme()
+                  : downloadBlendedImage();
               }}
             >
               <Text
