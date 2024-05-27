@@ -139,7 +139,7 @@ function page() {
   };
 
   const handleMouseDown = (e: any) => {
-    e.preventDefault(); // Prevents default mouse down behavior
+    // e.preventDefault(); // Prevents default mouse down behavior
     setIsRotating(false); // Stop rotation if any
   };
 
@@ -242,8 +242,11 @@ function page() {
         );
         context.restore();
 
+        const date = new Date();
+        const currentTime = date.getSeconds();
+
         const link = document.createElement("a");
-        link.download = "blended-image.png";
+        link.download = `blended-image-${currentTime}.png`;
         /* @ts-ignore */
         link.href = canvas.toDataURL();
         link.click();
