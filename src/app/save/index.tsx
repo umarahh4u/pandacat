@@ -674,6 +674,8 @@ function page() {
                                   }}
                                   position={positions[index]}
                                   onDragStop={(e, d) =>
+                                    // setPosition({ x: d.x, y: d.y })
+
                                     setPositions((pos) =>
                                       pos.map((prevPos, i) =>
                                         i === index
@@ -693,16 +695,14 @@ function page() {
                                       width: parseInt(ref.style.width, 10),
                                       height: parseInt(ref.style.height, 10),
                                     });
-                                    setPositions(position[index]);
+                                    // setPositions(position[index]);
                                   }}
                                   bounds="parent"
                                 >
                                   <DraggableImage
                                     src={defaultImage}
                                     rotation={rotations[index]}
-                                    onMouseDown={(e: any) =>
-                                      handleMouseDown(e, index)
-                                    }
+                                    onMouseDown={handleMouseDown}
                                   />
                                   <div
                                     style={{

@@ -4,10 +4,10 @@ import React from "react";
 import {
   chakra,
   Flex,
-  useColorModeValue,
   Text,
   Box,
   Image,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 

@@ -28,7 +28,6 @@ const sampleItems = [
 ];
 
 function Gallary() {
-  const language = process.env.PANDA_CAT_LANG;
   const { t, i18n } = useTranslation();
 
   return (
