@@ -103,6 +103,7 @@ function page() {
 
   const [defaultImages, setDefaultImages] = useState(["/cat.png", "logo.webp"]);
   const [uploadedImage, setUploadedImage] = useState();
+  const [activeIndex, setActiveIndex] = useState<any>();
   const [uploadedImageSize, setUploadedImageSize] = useState({
     width: 0,
     height: 0,
@@ -111,23 +112,22 @@ function page() {
     new Array(defaultImages.length).fill({ x: 50, y: 50 })
   );
 
-  const [size, setSize] = useState({ width: 100, height: 100 });
+  const [size, setSize] = useState<{ width: number; height: number }[]>(
+    new Array(defaultImages.length).fill({ width: 100, height: 100 })
+  );
 
   const [rotations, setRotations] = useState<number[]>(
     new Array(defaultImages.length).fill(0)
   );
-  const [isRotating, setIsRotating] = useState(false);
-  const [isDefaultImagesRotating, setIsDefaultImagesRotating] = useState(false);
+  const [isRotating, setIsRotating] = useState(
+    Array(defaultImages.length).fill(false)
+  );
 
   const [initialAngles, setInitialAngles] = useState<number[]>(
     new Array(defaultImages.length).fill(0)
   );
 
   const [startAngles, setStartAngles] = useState<number[]>(
-    new Array(defaultImages.length).fill(0)
-  );
-
-  const [defaultImagesRotation, setDefaultImagesRotation] = useState<number[]>(
     new Array(defaultImages.length).fill(0)
   );
 
@@ -161,16 +161,23 @@ function page() {
   const handleMouseDown = (e: any, index: number) => {
     e.preventDefault();
     draggingIndexRef.current = index;
+    setActiveIndex(index);
   };
 
   const handleRotationStart = (e: any, index: number) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsRotating(true);
+    setIsRotating((prevState) => {
+      const updatedState = [...prevState];
+      updatedState[index] = true;
+      return updatedState;
+    });
+    /* @ts-ignore */
+    setActiveIndex(index);
     draggingIndexRef.current = index;
 
-    const centerX = positions[index].x + size.width / 2;
-    const centerY = positions[index].y + size.height / 2;
+    const centerX = positions[index].x + size[index].width / 2;
+    const centerY = positions[index].y + size[index].height / 2;
     const mouseX = e.clientX || (e.touches && e.touches[0].clientX);
     const mouseY = e.clientY || (e.touches && e.touches[0].clientY);
     const angle =
@@ -188,8 +195,8 @@ function page() {
 
   const updateRotation = useCallback(
     (mouseX: number, mouseY: number, index: number) => {
-      const centerX = positions[index].x + size.width / 2;
-      const centerY = positions[index].y + size.height / 2;
+      const centerX = positions[index].x + size[index].width / 2;
+      const centerY = positions[index].y + size[index].height / 2;
       const angle =
         Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
       const newRotation = initialAngles[index] + (angle - startAngles[index]);
@@ -204,21 +211,21 @@ function page() {
   );
 
   const handleMouseMove = useCallback(
-    (e: any) => {
-      if (draggingIndexRef.current !== null && isRotating) {
+    (e: any, index: any) => {
+      if (isRotating[index]) {
         const mouseX = e.clientX || (e.touches && e.touches[0].clientX);
         const mouseY = e.clientY || (e.touches && e.touches[0].clientY);
         const newPosition = {
-          x: mouseX - size.width / 2,
-          y: mouseY - size.height / 2,
+          x: mouseX - size[index].width / 2,
+          y: mouseY - size[index].height / 2,
         };
         setPositions((prevPositions) =>
-          prevPositions.map((pos, i) =>
-            i === draggingIndexRef.current ? newPosition : pos
-          )
+          prevPositions.map((pos, i) => (i === activeIndex ? newPosition : pos))
         );
 
-        // requestAnimationFrame(() => updateRotation(mouseX, mouseY, ));
+        requestAnimationFrame(() =>
+          updateRotation(mouseX, mouseY, activeIndex)
+        );
       }
     },
     [size]
@@ -226,27 +233,34 @@ function page() {
 
   const handleMouseUp = useCallback(() => {
     draggingIndexRef.current = null;
+    setActiveIndex(null); // Reset active index
+    setIsRotating((prevState) => {
+      const updatedState = [...prevState];
+      updatedState[activeIndex] = false;
+      return updatedState;
+    });
   }, []);
 
   useEffect(() => {
-    if (isRotating) {
-      window.addEventListener("mousemove", handleMouseMove);
+    const moveHandler = (e: any) => handleMouseMove(e, activeIndex);
+    if (isRotating[activeIndex] && activeIndex !== null) {
+      window.addEventListener("mousemove", moveHandler);
       window.addEventListener("mouseup", handleMouseUp);
-      window.addEventListener("touchmove", handleMouseMove);
+      window.addEventListener("touchmove", moveHandler);
       window.addEventListener("touchend", handleMouseUp);
     } else {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousemove", moveHandler);
       window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchmove", moveHandler);
       window.removeEventListener("touchend", handleMouseUp);
     }
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousemove", moveHandler);
       window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchmove", moveHandler);
       window.removeEventListener("touchend", handleMouseUp);
     };
-  }, [handleMouseMove, handleMouseUp, isRotating]);
+  }, [handleMouseMove, handleMouseUp, isRotating[activeIndex]]);
 
   // useEffect(() => {
   //   window.addEventListener("mousemove", handleMouseMove);
@@ -287,18 +301,18 @@ function page() {
           /* @ts-ignore */
           context.translate(
             /* @ts-ignore */
-            positions[index].x + size.width / 2,
+            positions[index].x + size[index].width / 2,
             /* @ts-ignore */
-            positions[index].y + size.height / 2
+            positions[index].y + size[index].height / 2
           );
           /* @ts-ignore */
-          context.rotate((defaultImagesRotation[index] * Math.PI) / 180);
+          context.rotate((rotations[index] * Math.PI) / 180);
           context.drawImage(
             defaultImg,
-            -size.width / 2,
-            -size.height / 2,
-            size.width,
-            size.height
+            -size[index].width / 2,
+            -size[index].height / 2,
+            size[index].width,
+            size[index].height
           );
           context.restore();
 
@@ -318,19 +332,12 @@ function page() {
     };
   };
 
-  // const calculateHandlePosition = () => {
-  //   const radius = Math.max(size.width, size.height) / 2 + 20; // 20 pixels away from the edge
-  //   const angleInRadians = rotation * (Math.PI / 180);
-  //   const x = Math.cos(angleInRadians) * radius;
-  //   const y = Math.sin(angleInRadians) * radius;
-  //   return { x, y };
-  // };
-
-  // const handlePosition = calculateHandlePosition();
-
   const calculateHandlePositions = () => {
     return positions.map((pos, index) => {
-      const radius = Math.max(size.width, size.height) / 2 + 20; // 20 pixels away from the edge
+      /* @ts-ignore */
+      const radius = Math.max(size[index]?.width, size[index]?.height) / 2 + 20; // 20 pixels away from the edge
+      /* @ts-ignore */
+
       const angleInRadians = rotations[index] * (Math.PI / 180);
       const x = Math.cos(angleInRadians) * radius;
       const y = Math.sin(angleInRadians) * radius;
@@ -639,10 +646,6 @@ function page() {
                               height: uploadedImageSize.height,
                             }}
                           >
-                            {/* upload image background  */}
-                            {/* {selectedFiles &&
-                                selectedFiles.length > 0 &&
-                                selectedFiles.map((img) => ( */}
                             <img
                               src={uploadedImage}
                               alt="Uploaded"
@@ -669,8 +672,8 @@ function page() {
                                     userSelect: "none", // Prevent text selection
                                   }}
                                   size={{
-                                    width: size.width,
-                                    height: size.height,
+                                    width: size[index].width,
+                                    height: size[index].height,
                                   }}
                                   position={positions[index]}
                                   onDragStop={(e, d) =>
@@ -689,11 +692,32 @@ function page() {
                                     delta,
                                     position
                                   ) => {
-                                    setSize({
-                                      width: parseInt(ref.style.width, 10),
-                                      height: parseInt(ref.style.height, 10),
-                                    });
-                                    setPositions(position[index]);
+                                    setSize((preSize) =>
+                                      preSize.map((previousSize, i) =>
+                                        i === index
+                                          ? {
+                                              ...previousSize,
+                                              width: parseInt(
+                                                ref.style.width,
+                                                10
+                                              ),
+                                              height: parseInt(
+                                                ref.style.height,
+                                                10
+                                              ),
+                                            }
+                                          : previousSize
+                                      )
+                                    );
+                                    // setPositions((prev) =>
+                                    //   prev.map((prePosition, i) =>
+                                    //     i === index
+                                    //       ? { ...prePosition, position }
+                                    //       : prePosition
+                                    //   )
+                                    // );
+
+                                    setPositions((pre) => pre.map());
                                   }}
                                   bounds="parent"
                                 >
@@ -711,7 +735,7 @@ function page() {
                                       left: `calc(50% - 10px + ${handlePositions[index].x}px)`,
                                       width: 20,
                                       height: 20,
-                                      backgroundColor: "blue",
+                                      // backgroundColor: "blue",
                                       borderRadius: "50%",
                                       cursor: "pointer",
                                     }}
