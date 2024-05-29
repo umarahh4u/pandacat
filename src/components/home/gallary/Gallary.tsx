@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 
 import {
   chakra,
@@ -29,6 +30,7 @@ const sampleItems = [
 
 function Gallary() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
 
   return (
     <chakra.div
@@ -89,6 +91,10 @@ function Gallary() {
           <CustomButton
             w={{ base: "7rem", md: "10rem" }}
             h={{ base: "3rem", md: "3.5rem" }}
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/mememaker");
+            }}
           >
             <Text
               sx={{

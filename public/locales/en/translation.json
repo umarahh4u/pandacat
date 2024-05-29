@@ -15,6 +15,7 @@
     "meme_template": "Select Meme Template",
     "meme_description": "Level up your crypto game with our meme-making platform.",
     "click_to_upload": "Click to upload file",
-    "drag_drop_file": "or drag and drop"
+    "drag_drop_file": "or drag and drop",
+    "add_meme_head": " Add Meme Head"
   }
 }

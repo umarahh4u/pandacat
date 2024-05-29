@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
+
 import {
   chakra,
   Flex,
@@ -24,6 +26,7 @@ interface IProps {
 export const Hero = ({ triggerNav, menus }: IProps) => {
   const bg = useColorModeValue("#F2F2F2", "black");
   const { t, i18n } = useTranslation();
+  const router = useRouter();
 
   const maskWord = (word: any) => {
     // Check if word length is greater than 20
@@ -119,6 +122,12 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
               w={{ base: "7rem", md: "10rem" }}
               h={{ base: "3rem", md: "3.5rem" }}
               fontWeight="medium"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(
+                  "https://dexscreener.com/solana/3VychHXJwuE1Eb8mvk3RdqaXSsFCKo4mV2SH3RDB2sju"
+                );
+              }}
             >
               <Text
                 sx={{
@@ -144,6 +153,12 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
               h={{ base: "3rem", md: "3.5rem" }}
               fontWeight="medium"
               variant={"gray"}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(
+                  "https://dexscreener.com/solana/3VychHXJwuE1Eb8mvk3RdqaXSsFCKo4mV2SH3RDB2sju"
+                );
+              }}
             >
               <Text
                 sx={{

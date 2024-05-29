@@ -9,7 +9,7 @@ import Gallary from "@/components/home/gallary";
 import Footer from "@/components/home/footer";
 // import LanguageContextProvider from "src/contexts";
 
-const MAX_VIEWPORT: number = 150;
+const MAX_VIEWPORT: number = 10;
 
 export default function Home() {
   const [triggerNav, setTriggerNav] = useState<boolean>(false);

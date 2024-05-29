@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useRef } from "react";
 import {
   chakra,
   HStack,
@@ -58,7 +58,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
 
   const { t, i18n } = useTranslation();
 
-  const ref = React.useRef<any>();
+  const ref = useRef<any>();
 
   const router = useRouter();
 
@@ -143,6 +143,12 @@ const NavBar = ({ menus, canStick }: IProps) => {
           <CustomButton
             w={{ base: "7rem", md: "10rem" }}
             h={{ base: "3rem", md: "3.5rem" }}
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(
+                "https://dexscreener.com/solana/3VychHXJwuE1Eb8mvk3RdqaXSsFCKo4mV2SH3RDB2sju"
+              );
+            }}
           >
             <Text
               sx={{
@@ -271,6 +277,12 @@ const NavBar = ({ menus, canStick }: IProps) => {
                 <CustomButton
                   w={{ base: "7rem", md: "10rem" }}
                   h={{ base: "3rem", md: "3.5rem" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(
+                      "https://dexscreener.com/solana/3VychHXJwuE1Eb8mvk3RdqaXSsFCKo4mV2SH3RDB2sju"
+                    );
+                  }}
                 >
                   <Text
                     fontSize={{ base: "1.2rem", md: "1.5rem" }}

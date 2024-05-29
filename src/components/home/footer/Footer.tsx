@@ -5,6 +5,7 @@ import { useAnimation, motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FaXTwitter } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 import { FaTelegramPlane } from "react-icons/fa";
 
@@ -15,6 +16,7 @@ function Footer() {
   const controls = useAnimation();
   const { inView, ref } = useInView();
   const { t, i18n } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     if (inView) {
@@ -100,11 +102,23 @@ function Footer() {
                 maxW: "3rem",
               }}
             >
-              <FaXTwitter cursor="pointer" color="white" fontSize={"1.5rem"} />
+              <FaXTwitter
+                cursor="pointer"
+                color="white"
+                fontSize={"1.5rem"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("https://x.com/pandacatpc?s=21");
+                }}
+              />
               <FaTelegramPlane
                 cursor="pointer"
                 color="white"
                 fontSize={"1.5rem"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("https://t.me/+fEY035bHNWhmZWZk");
+                }}
               />
             </Box>
           </Box>

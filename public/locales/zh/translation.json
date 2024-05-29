@@ -15,6 +15,7 @@
     "meme_template": "选择模因模板",
     "meme_description": "使用我们的模因制作平台升级您的加密游戏。",
     "click_to_upload": "点击上传文件",
-    "drag_drop_file": "或拖放"
+    "drag_drop_file": "或拖放",
+    "add_meme_head": " 添加模因头"
   }
 }

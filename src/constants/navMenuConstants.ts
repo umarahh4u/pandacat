@@ -2,13 +2,13 @@ export const navMenus: INav[] = [
   {
     id: "telegram",
     name: "Telegram",
-    path: "#",
+    path: "https://t.me/+fEY035bHNWhmZWZk",
     type: "regular",
   },
   {
     id: "twitter",
     name: "X (twitter)",
-    path: "#",
+    path: "https://x.com/pandacatpc?s=21",
     type: "regular",
   },
   {

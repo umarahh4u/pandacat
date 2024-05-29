@@ -5,6 +5,9 @@ import { useTranslation } from "react-i18next";
 import { Rnd } from "react-rnd";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { FaArrowRotateRight } from "react-icons/fa6";
+import { MdOutlineDelete } from "react-icons/md";
+import "../i18n";
 
 import {
   chakra,
@@ -17,7 +20,6 @@ import {
   Image as Images,
   Container,
 } from "@chakra-ui/react";
-import "../i18n";
 import { useDropzone } from "react-dropzone";
 import { CiFileOn } from "react-icons/ci";
 import { IoIosCheckbox } from "react-icons/io";
@@ -71,6 +73,8 @@ const imageList = [
   },
 ];
 
+const MAX_VIEWPORT: number = 20;
+
 /* @ts-ignore */
 
 const DraggableImage = ({ src, rotation, onMouseDown }) => {
@@ -91,7 +95,6 @@ const DraggableImage = ({ src, rotation, onMouseDown }) => {
   );
 };
 
-/* @ts-ignore */
 function page() {
   const [triggerNav, setTriggerNav] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
@@ -101,41 +104,55 @@ function page() {
   const [imageBg, setImageBg] = useState<any[]>();
   const { t, i18n } = useTranslation();
 
-  const [defaultImages, setDefaultImages] = useState(["/cat.png", "logo.webp"]);
-  const [uploadedImage, setUploadedImage] = useState();
-  const [activeIndex, setActiveIndex] = useState<any>();
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    alert(currentScrollY);
+    console.log("eeeeee", currentScrollY);
+
+    if (currentScrollY > MAX_VIEWPORT) {
+      setTriggerNav(true);
+    }
+
+    if (currentScrollY < MAX_VIEWPORT) {
+      setTriggerNav(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [triggerNav]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const [defaultImage] = useState(["/cat.png"]);
+  /* @ts-ignore */
+  const [uploadedImage, setUploadedImage] = useState(null);
+
   const [uploadedImageSize, setUploadedImageSize] = useState({
     width: 0,
     height: 0,
   });
-  const [positions, setPositions] = useState<{ x: number; y: number }[]>(
-    new Array(defaultImages.length).fill({ x: 50, y: 50 })
-  );
 
-  const [size, setSize] = useState<{ width: number; height: number }[]>(
-    new Array(defaultImages.length).fill({ width: 100, height: 100 })
-  );
+  // State for multiple Rnd components
+  const [catHeads, setCatHeads] = useState([
+    {
+      position: { x: 50, y: 50 },
+      size: { width: 100, height: 100 },
+      rotation: 0,
+    },
+  ]);
 
-  const [rotations, setRotations] = useState<number[]>(
-    new Array(defaultImages.length).fill(0)
-  );
-  const [isRotating, setIsRotating] = useState(
-    Array(defaultImages.length).fill(false)
-  );
-
-  const [initialAngles, setInitialAngles] = useState<number[]>(
-    new Array(defaultImages.length).fill(0)
-  );
-
-  const [startAngles, setStartAngles] = useState<number[]>(
-    new Array(defaultImages.length).fill(0)
-  );
-
-  const draggingIndexRef = useRef<number | null>(null);
-
+  const [isRotating, setIsRotating] = useState(false);
+  const [initialAngle, setInitialAngle] = useState(0);
+  const [startAngle, setStartAngle] = useState(0);
+  const [currentRotationIndex, setCurrentRotationIndex] = useState(null);
   const canvasRef = useRef(null);
 
-  const handleImageLoad = (e: any) => {
+  /* @ts-ignore */
+  const handleImageLoad = (e) => {
     const { naturalWidth, naturalHeight } = e.target;
     const aspectRatio = naturalWidth / naturalHeight;
 
@@ -158,194 +175,164 @@ function page() {
     setUploadedImageSize({ width, height });
   };
 
-  const handleMouseDown = (e: any, index: number) => {
-    e.preventDefault();
-    draggingIndexRef.current = index;
-    setActiveIndex(index);
+  /* @ts-ignore */
+  const handleMouseDown = (e) => {
+    e.preventDefault(); // Prevents default mouse down behavior
+    setIsRotating(false); // Stop rotation if any
   };
 
-  const handleRotationStart = (e: any, index: number) => {
+  /* @ts-ignore */
+  const handleRotationStart = (e, index) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsRotating((prevState) => {
-      const updatedState = [...prevState];
-      updatedState[index] = true;
-      return updatedState;
-    });
-    /* @ts-ignore */
-    setActiveIndex(index);
-    draggingIndexRef.current = index;
+    setIsRotating(true);
+    setCurrentRotationIndex(index);
 
-    const centerX = positions[index].x + size[index].width / 2;
-    const centerY = positions[index].y + size[index].height / 2;
+    const { position, size } = catHeads[index];
+    const { x, y, width, height } = { ...position, ...size };
+    const centerX = x + width / 2;
+    const centerY = y + height / 2;
     const mouseX = e.clientX || (e.touches && e.touches[0].clientX);
     const mouseY = e.clientY || (e.touches && e.touches[0].clientY);
     const angle =
       Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
-
-    setStartAngles((prevStartAngles) =>
-      prevStartAngles.map((startAngle, i) => (i === index ? angle : startAngle))
-    );
-    setInitialAngles((prevInitialAngles) =>
-      prevInitialAngles.map((initialAngle, i) =>
-        i === index ? rotations[index] : initialAngle
-      )
-    );
+    setStartAngle(angle);
+    setInitialAngle(catHeads[index].rotation);
   };
 
+  /* @ts-ignore */
   const updateRotation = useCallback(
-    (mouseX: number, mouseY: number, index: number) => {
-      const centerX = positions[index].x + size[index].width / 2;
-      const centerY = positions[index].y + size[index].height / 2;
+    (mouseX: any, mouseY: any) => {
+      /* @ts-ignore */
+      const { position, size } = catHeads[currentRotationIndex];
+      /* @ts-ignore */
+      const { x, y, width, height } = { ...position, ...size };
+      const centerX = x + width / 2;
+      const centerY = y + height / 2;
       const angle =
         Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
-      const newRotation = initialAngles[index] + (angle - startAngles[index]);
-
-      setRotations((prevRotations) =>
-        prevRotations.map((rotation, i) =>
-          i === index ? newRotation : rotation
+      const newRotation = initialAngle + (angle - startAngle);
+      setCatHeads((prevHeads) =>
+        prevHeads.map((head, index) =>
+          index === currentRotationIndex
+            ? { ...head, rotation: newRotation }
+            : head
         )
       );
     },
-    [initialAngles, startAngles, positions, size]
+    [currentRotationIndex, initialAngle, catHeads, startAngle]
   );
 
+  /* @ts-ignore */
   const handleMouseMove = useCallback(
-    (e: any, index: any) => {
-      if (isRotating[index]) {
+    (e: any) => {
+      if (isRotating) {
         const mouseX = e.clientX || (e.touches && e.touches[0].clientX);
         const mouseY = e.clientY || (e.touches && e.touches[0].clientY);
-        const newPosition = {
-          x: mouseX - size[index].width / 2,
-          y: mouseY - size[index].height / 2,
-        };
-        setPositions((prevPositions) =>
-          prevPositions.map((pos, i) => (i === activeIndex ? newPosition : pos))
-        );
-
-        requestAnimationFrame(() =>
-          updateRotation(mouseX, mouseY, activeIndex)
-        );
+        requestAnimationFrame(() => updateRotation(mouseX, mouseY));
       }
     },
-    [size]
+    [isRotating, updateRotation]
   );
 
-  const handleMouseUp = useCallback(() => {
-    draggingIndexRef.current = null;
-    setActiveIndex(null); // Reset active index
-    setIsRotating((prevState) => {
-      const updatedState = [...prevState];
-      updatedState[activeIndex] = false;
-      return updatedState;
-    });
-  }, []);
+  /* @ts-ignore */
+  const handleMouseUp = (e) => {
+    e.preventDefault(); // Prevents default mouse up behavior
+    setIsRotating(false);
+    setCurrentRotationIndex(null);
+  };
 
   useEffect(() => {
-    const moveHandler = (e: any) => handleMouseMove(e, activeIndex);
-    if (isRotating[activeIndex] && activeIndex !== null) {
-      window.addEventListener("mousemove", moveHandler);
+    if (isRotating) {
+      window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
-      window.addEventListener("touchmove", moveHandler);
+      window.addEventListener("touchmove", handleMouseMove);
       window.addEventListener("touchend", handleMouseUp);
     } else {
-      window.removeEventListener("mousemove", moveHandler);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("touchmove", moveHandler);
+      window.removeEventListener("touchmove", handleMouseMove);
       window.removeEventListener("touchend", handleMouseUp);
     }
     return () => {
-      window.removeEventListener("mousemove", moveHandler);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("touchmove", moveHandler);
+      window.removeEventListener("touchmove", handleMouseMove);
       window.removeEventListener("touchend", handleMouseUp);
     };
-  }, [handleMouseMove, handleMouseUp, isRotating[activeIndex]]);
-
-  // useEffect(() => {
-  //   window.addEventListener("mousemove", handleMouseMove);
-  //   window.addEventListener("mouseup", handleMouseUp);
-  //   window.addEventListener("touchmove", handleMouseMove);
-  //   window.addEventListener("touchend", handleMouseUp);
-
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleMouseMove);
-  //     window.removeEventListener("mouseup", handleMouseUp);
-  //     window.removeEventListener("touchmove", handleMouseMove);
-  //     window.removeEventListener("touchend", handleMouseUp);
-  //   };
-  // }, [handleMouseMove, handleMouseUp]);
+  }, [isRotating, handleMouseMove]);
 
   const downloadBlendedImage = () => {
     const canvas = canvasRef.current;
     /* @ts-ignore */
     const context = canvas.getContext("2d");
+
     /* @ts-ignore */
     canvas.width = uploadedImageSize.width;
     /* @ts-ignore */
     canvas.height = uploadedImageSize.height;
 
-    let uploadedImg = new Image();
+    const uploadedImg = new Image();
     /* @ts-ignore */
     uploadedImg.src = uploadedImage;
     uploadedImg.onload = () => {
       /* @ts-ignore */
       context.drawImage(uploadedImg, 0, 0, canvas.width, canvas.height);
 
-      // Draw each default image
-      defaultImages.forEach((defaultImage, index) => {
-        let defaultImg = new Image();
-        defaultImg.src = defaultImage;
-        defaultImg.onload = () => {
+      const defaultImg = new Image();
+      /* @ts-ignore */
+      defaultImg.src = defaultImage;
+      defaultImg.onload = () => {
+        catHeads.forEach(({ position, size, rotation }) => {
           context.save();
-          /* @ts-ignore */
           context.translate(
-            /* @ts-ignore */
-            positions[index].x + size[index].width / 2,
-            /* @ts-ignore */
-            positions[index].y + size[index].height / 2
+            position.x + size.width / 2,
+            position.y + size.height / 2
           );
-          /* @ts-ignore */
-          context.rotate((rotations[index] * Math.PI) / 180);
+          context.rotate((rotation * Math.PI) / 180);
           context.drawImage(
             defaultImg,
-            -size[index].width / 2,
-            -size[index].height / 2,
-            size[index].width,
-            size[index].height
+            -size.width / 2,
+            -size.height / 2,
+            size.width,
+            size.height
           );
           context.restore();
+        });
 
-          // If this is the last image, trigger the download
-          if (index === defaultImages.length - 1) {
-            const date = new Date();
-            const currentTime = date.getSeconds();
-
-            const link = document.createElement("a");
-            link.download = `blended-image-${currentTime}.png`;
-            /* @ts-ignore */
-            link.href = canvas.toDataURL();
-            link.click();
-          }
-        };
-      });
+        const link = document.createElement("a");
+        link.download = "blended-image.png";
+        /* @ts-ignore */
+        link.href = canvas.toDataURL();
+        link.click();
+      };
     };
   };
 
-  const calculateHandlePositions = () => {
-    return positions.map((pos, index) => {
-      /* @ts-ignore */
-      const radius = Math.max(size[index]?.width, size[index]?.height) / 2 + 20; // 20 pixels away from the edge
-      /* @ts-ignore */
-
-      const angleInRadians = rotations[index] * (Math.PI / 180);
-      const x = Math.cos(angleInRadians) * radius;
-      const y = Math.sin(angleInRadians) * radius;
-      return { x: pos.x + x, y: pos.y + y };
-    });
+  /* @ts-ignore */
+  const calculateHandlePosition = (size, rotation) => {
+    const radius = Math.max(size.width, size.height) / 2 + 20; // 20 pixels away from the edge
+    const angleInRadians = rotation * (Math.PI / 180);
+    const x = Math.cos(angleInRadians) * radius;
+    const y = Math.sin(angleInRadians) * radius;
+    return { x, y };
   };
 
-  const handlePositions = calculateHandlePositions();
+  const handleAddCatHead = () => {
+    setCatHeads((prevHeads) => [
+      ...prevHeads,
+      {
+        position: { x: 200, y: 200 },
+        size: { width: 100, height: 100 },
+        rotation: 0,
+      },
+    ]);
+  };
+
+  /* @ts-ignore */
+  const handleDeleteCatHead = (index) => {
+    setCatHeads((prevHeads) => prevHeads.filter((_, i) => i !== index));
+  };
 
   const handleGenerateMeme = () => {
     setFirstStep(true);
@@ -374,10 +361,6 @@ function page() {
   useEffect(() => {
     setImageBg(imageSelect.filter((img) => img.checked === true));
   }, [imageSelect]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     //  to avoid memory leaks, will run on unmount
@@ -445,20 +428,52 @@ function page() {
             p: "0.8rem",
           }}
         >
-          <Text
+          <Box
             sx={{
-              fontSize: { base: "1.3rem", md: "1.8rem" },
-              fontWeight: 400,
-              fontFamily: "Inika",
-              lineHeight: "28px",
-              color: "#FFFFFF",
-              mb: "0.6rem",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
-            {firstSTep === false
-              ? `${t("main.panda_cat_maker")}`
-              : `${t("main.preview")}`}
-          </Text>
+            <Text
+              sx={{
+                fontSize: { base: "1.3rem", md: "1.8rem" },
+                fontWeight: 400,
+                fontFamily: "Inika",
+                lineHeight: "28px",
+                color: "#FFFFFF",
+                mb: "0.6rem",
+              }}
+            >
+              {firstSTep === false
+                ? `${t("main.panda_cat_maker")}`
+                : `${t("main.preview")}`}
+            </Text>
+            {firstSTep && (
+              <CustomButton
+                onClick={handleAddCatHead}
+                sx={{
+                  maxW: "10rem",
+                }}
+              >
+                <Text
+                  sx={{
+                    fontSize: "0.8rem",
+                    textShadow: `0px 0px 0 rgb(182,185,180),
+                   -1px 1px 0 rgb(128,131,126),
+                   -2px 2px 0 rgb(75,78,73),
+                   -3px 3px 0 rgb(21,24,19),
+                   -4px 4px  0 rgb(-32,-29,0),
+                   -5px 5px 4px rgba(3,10,1,0.56),
+                   -5px 5px 1px rgba(3,10,1,0.5),
+                   0px 0px 4px rgba(3,10,1,.2)`,
+                    color: "white",
+                  }}
+                >
+                  {t("main.add_meme_head")}
+                </Text>
+              </CustomButton>
+            )}
+          </Box>
           <Text
             sx={{
               fontSize: { base: "0.8rem", md: "1rem" },
@@ -563,7 +578,7 @@ function page() {
           <Box
             sx={{
               w: "full",
-              maxH: "20rem",
+              // maxH: "20rem",
               minH: firstSTep ? "20rem" : "0",
               overflowY: "scroll",
               backgroundColor: firstSTep && "#2B2B26",
@@ -657,31 +672,36 @@ function page() {
                                 userSelect: "none", // Prevent text selection
                               }}
                             />
-                            {/* ))} */}
-                            {defaultImages &&
-                              defaultImages.length >= 1 &&
-                              defaultImages.map((defaultImage, index) => (
+                            {catHeads.map((head, index) => {
+                              const handlePosition = calculateHandlePosition(
+                                head.size,
+                                head.rotation
+                              );
+                              return (
                                 <Rnd
-                                  key={`index_${index}`}
+                                  key={index}
                                   style={{
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    transform: `rotate(${rotations[index]}deg)`,
+                                    transform: `rotate(${head.rotation}deg)`,
                                     border: "2px solid red",
                                     userSelect: "none", // Prevent text selection
                                   }}
                                   size={{
-                                    width: size[index].width,
-                                    height: size[index].height,
+                                    width: head.size.width,
+                                    height: head.size.height,
                                   }}
-                                  position={positions[index]}
+                                  position={head.position}
                                   onDragStop={(e, d) =>
-                                    setPositions((pos) =>
-                                      pos.map((prevPos, i) =>
+                                    setCatHeads((prevHeads) =>
+                                      prevHeads.map((h, i) =>
                                         i === index
-                                          ? { ...prevPos, x: d.x, y: d.y }
-                                          : prevPos
+                                          ? {
+                                              ...h,
+                                              position: { x: d.x, y: d.y },
+                                            }
+                                          : h
                                       )
                                     )
                                   }
@@ -692,51 +712,44 @@ function page() {
                                     delta,
                                     position
                                   ) => {
-                                    setSize((preSize) =>
-                                      preSize.map((previousSize, i) =>
+                                    setCatHeads((prevHeads) =>
+                                      prevHeads.map((h, i) =>
                                         i === index
                                           ? {
-                                              ...previousSize,
-                                              width: parseInt(
-                                                ref.style.width,
-                                                10
-                                              ),
-                                              height: parseInt(
-                                                ref.style.height,
-                                                10
-                                              ),
+                                              ...h,
+                                              size: {
+                                                width: parseInt(
+                                                  ref.style.width,
+                                                  10
+                                                ),
+                                                height: parseInt(
+                                                  ref.style.height,
+                                                  10
+                                                ),
+                                              },
+                                              position,
                                             }
-                                          : previousSize
+                                          : h
                                       )
                                     );
-                                    // setPositions((prev) =>
-                                    //   prev.map((prePosition, i) =>
-                                    //     i === index
-                                    //       ? { ...prePosition, position }
-                                    //       : prePosition
-                                    //   )
-                                    // );
-
-                                    setPositions((pre) => pre.map());
                                   }}
                                   bounds="parent"
                                 >
                                   <DraggableImage
                                     src={defaultImage}
-                                    rotation={rotations[index]}
-                                    onMouseDown={(e: any) =>
-                                      handleMouseDown(e, index)
-                                    }
+                                    rotation={head.rotation}
+                                    onMouseDown={handleMouseDown}
                                   />
                                   <div
                                     style={{
                                       position: "absolute",
-                                      top: `calc(50% - 10px + ${handlePositions[index].y}px)`,
-                                      left: `calc(50% - 10px + ${handlePositions[index].x}px)`,
+                                      top: `calc(50% - 10px + ${handlePosition.y}px)`,
+                                      left: `calc(50% - 10px + ${handlePosition.x}px)`,
                                       width: 20,
                                       height: 20,
-                                      // backgroundColor: "blue",
-                                      borderRadius: "50%",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
                                       cursor: "pointer",
                                     }}
                                     onMouseDown={(e) =>
@@ -745,9 +758,31 @@ function page() {
                                     onTouchStart={(e) =>
                                       handleRotationStart(e, index)
                                     }
-                                  />
+                                  >
+                                    <FaArrowRotateRight color="white" />
+                                  </div>
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: -20,
+                                      right: -10,
+                                      width: 20,
+                                      height: 20,
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      cursor: "pointer",
+                                      backgroundColor: "red",
+                                      borderRadius: "50%",
+                                      color: "white",
+                                    }}
+                                    onClick={() => handleDeleteCatHead(index)}
+                                  >
+                                    <MdOutlineDelete />
+                                  </div>
                                 </Rnd>
-                              ))}
+                              );
+                            })}
                           </div>
                         </div>
                       )}
