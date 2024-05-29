@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -9,6 +9,7 @@ import {
   Text,
   Box,
   Image,
+  useToast,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import NavBar from "@/components/home/NavBar";
 import CustomButton from "../Button";
 import Reveal from "../reveal";
+import PandaCat from "@/constants/colorConstants";
 
 interface IProps {
   menus: INav[];
@@ -27,6 +29,27 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
   const bg = useColorModeValue("#F2F2F2", "black");
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const toast = useToast();
+
+  const handleCopyClipboard = (text: string) => {
+    if (typeof window !== "undefined") {
+      const ta = document.createElement("textarea");
+      ta.innerText = text;
+      document.body.appendChild(ta);
+      ta.select();
+      navigator.clipboard.writeText(`${ta.textContent}`);
+      ta.remove();
+      toast({
+        title: "Copied",
+        duration: 2000,
+        isClosable: true,
+        containerStyle: {
+          backgroundColor: PandaCat.primary,
+          borderRadius: "5px",
+        },
+      });
+    }
+  };
 
   const maskWord = (word: any) => {
     // Check if word length is greater than 20
@@ -87,9 +110,6 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
                     : "/img/pandacatchina.svg"
                 }
                 alt="Panda Cat Image"
-                width={{ base: "auto", md: "845px" }}
-                height={{ base: "auto", md: "188px" }}
-                ml={i18n.language === "en" ? "" : "-5.5rem"}
               />
               <Box
                 maxW={{ base: "container.sm", md: "31.25rem" }}
@@ -205,6 +225,11 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
             transform: "skew(-15deg)",
             overflow: "hidden",
           }}
+          onClick={(e: any) =>
+            handleCopyClipboard(
+              maskWord("CA:8HpGNw96EbNojdDLjLpPC6EQKXB4aYvzFzYPqdT4UNu1")
+            )
+          }
         >
           <Text
             sx={{

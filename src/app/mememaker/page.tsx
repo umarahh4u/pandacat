@@ -452,6 +452,8 @@ function page() {
                 sx={{
                   maxW: "10rem",
                 }}
+                w={{ base: "9rem", md: "10rem" }}
+                h={{ base: "3rem", md: "3.5rem" }}
               >
                 <Text
                   sx={{
