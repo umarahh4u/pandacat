@@ -40,11 +40,9 @@ export default function Home() {
 
   return (
     <>
-      {/* <LanguageContextProvider> */}
       <Hero menus={navMenus} canStick={triggerNav} triggerNav={triggerNav} />
       <Gallary />
       <Footer />
-      {/* </LanguageContextProvider> */}
     </>
   );
 }

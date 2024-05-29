@@ -100,14 +100,12 @@ function page() {
   const [mounted, setMounted] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [imageSelect, setImageSelect] = useState<any[]>([...imageList]);
-  const [firstSTep, setFirstStep] = useState<boolean>(false);
+  const [firstStep, setFirstStep] = useState<boolean>(false);
   const [imageBg, setImageBg] = useState<any[]>();
   const { t, i18n } = useTranslation();
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-    alert(currentScrollY);
-    console.log("eeeeee", currentScrollY);
 
     if (currentScrollY > MAX_VIEWPORT) {
       setTriggerNav(true);
@@ -444,11 +442,11 @@ function page() {
                 mb: "0.6rem",
               }}
             >
-              {firstSTep === false
+              {firstStep === false
                 ? `${t("main.panda_cat_maker")}`
                 : `${t("main.preview")}`}
             </Text>
-            {firstSTep && (
+            {firstStep && (
               <CustomButton
                 onClick={handleAddCatHead}
                 sx={{
@@ -483,9 +481,9 @@ function page() {
               mb: "1rem",
             }}
           >
-            {firstSTep === false ? `${t("main.meme_description")}` : ""}
+            {firstStep === false ? `${t("main.meme_description")}` : ""}
           </Text>
-          {firstSTep === false ? (
+          {firstStep === false ? (
             <Box
               sx={{
                 borderRadius: "10px",
@@ -573,18 +571,18 @@ function page() {
               mb: "1rem",
             }}
           >
-            {firstSTep === false ? `${t("main.meme_template")}` : ""}
+            {firstStep === false ? `${t("main.meme_template")}` : ""}
           </Text>
           <Box
             sx={{
               w: "full",
               // maxH: "20rem",
-              minH: firstSTep ? "20rem" : "0",
+              minH: firstStep ? "20rem" : "0",
               overflowY: "scroll",
-              backgroundColor: firstSTep && "#2B2B26",
+              backgroundColor: firstStep && "#2B2B26",
             }}
           >
-            {firstSTep === false ? (
+            {firstStep === false ? (
               <Grid
                 templateColumns={{
                   base: "repeat(3, 1fr)",
@@ -796,10 +794,10 @@ function page() {
           <Divider mb="1.5rem" />
           <Flex
             justifyContent={`${
-              firstSTep === true ? "space-between" : "flex-end"
+              firstStep === true ? "space-between" : "flex-end"
             }`}
           >
-            {!!firstSTep && (
+            {!!firstStep && (
               <CustomButton
                 sx={{
                   alignSelf: "right",
@@ -839,7 +837,7 @@ function page() {
               onClick={(e) => {
                 e.preventDefault();
 
-                firstSTep === false
+                firstStep === false
                   ? handleGenerateMeme()
                   : downloadBlendedImage();
               }}
@@ -858,7 +856,7 @@ function page() {
                   fontSize: { base: "0.8rem", md: "1.2rem" },
                 }}
               >
-                {firstSTep === false
+                {firstStep === false
                   ? `${t("main.btn_generate_meme")}`
                   : `${t("main.btn_download")}`}
               </Text>
