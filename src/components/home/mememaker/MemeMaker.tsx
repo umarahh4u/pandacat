@@ -371,8 +371,9 @@ function MemeMaker() {
         maxW: "85rem",
         mt: "6.5rem",
         mx: "auto",
-        overflow: "hidden",
+        // overflow: "hidden",
         h: "100vh",
+        overflowY: "scroll",
       }}
     >
       <Box
