@@ -105,7 +105,7 @@ export const Hero = ({ triggerNav, menus }: IProps) => {
             >
               <Image
                 src={
-                  i18n.language === "en"
+                  i18n.language === ("en" || "en-US")
                     ? "/img/PandaCat.svg"
                     : "/img/pandacatchina.svg"
                 }

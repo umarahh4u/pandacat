@@ -33,7 +33,7 @@ import CustomButton from "@/components/Button";
 import { useTranslation } from "react-i18next";
 
 const locales: any = {
-  en: { title: "En" },
+  en: { title: "en" },
   zh: { title: "Zh" },
 };
 
@@ -77,7 +77,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
         >
           <Image
             src={
-              i18n.language === "en"
+              i18n.language === ("en" || "en-US")
                 ? "/img/PandaCat.svg"
                 : "/img/pandacatchina.svg"
             }
@@ -200,7 +200,7 @@ const NavBar = ({ menus, canStick }: IProps) => {
               <HStack>
                 <Image
                   src={
-                    i18n.language === "en"
+                    i18n.language === ("en" || "en-US")
                       ? "/img/PandaCat.svg"
                       : "/img/pandacatchina.svg"
                   }

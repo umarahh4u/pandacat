@@ -738,7 +738,11 @@ function MemeMaker() {
                                     color: "white",
                                     zIndex: 10,
                                   }}
-                                  onClick={() => handleDeleteCatHead(index)}
+                                  onPointerEnter={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    handleDeleteCatHead(index);
+                                  }}
                                 >
                                   <MdOutlineDelete fontSize={"1.5rem"} />
                                 </div>

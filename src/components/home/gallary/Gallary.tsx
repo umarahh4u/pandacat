@@ -62,7 +62,7 @@ function Gallary() {
         >
           <Image
             src={
-              i18n.language === "en"
+              i18n.language === ("en" || "en-US")
                 ? "/img/pandamaker.svg"
                 : "/img/pandacatmemechina.svg"
             }
