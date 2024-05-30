@@ -740,10 +740,7 @@ function MemeMaker() {
                                   }}
                                   onClick={() => handleDeleteCatHead(index)}
                                 >
-                                  <MdOutlineDelete
-                                    fontSize={"1.5rem"}
-                                    cursor={"pointer"}
-                                  />
+                                  <MdOutlineDelete fontSize={"1.5rem"} />
                                 </div>
                               </Rnd>
                             );
