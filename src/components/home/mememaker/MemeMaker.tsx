@@ -381,6 +381,7 @@ function MemeMaker() {
           boxShadow: "rgba(16, 24, 40, 0.08)",
           bg: "#31312B",
           p: "0.8rem",
+          mb: "8rem",
         }}
       >
         <Box
@@ -471,12 +472,12 @@ function MemeMaker() {
                 {selectedFiles.length > 0 ? (
                   selectedFiles.map((file, i) => (
                     <>
-                      <CustomImage
+                      <Images
                         key={`list_${i}`}
                         alt="uploaded image"
                         src={file?.src}
-                        width={147}
-                        height={120}
+                        // width={147}
+                        // height={120}
                       />
                     </>
                   ))
@@ -520,7 +521,7 @@ function MemeMaker() {
         )}
 
         <Divider mb="1.2rem" />
-        <Text
+        {/* <Text
           sx={{
             fontSize: { base: "1.1rem", md: "1.25rem" },
             fontFamily: "Inika",
@@ -531,7 +532,7 @@ function MemeMaker() {
           }}
         >
           {firstStep === false ? `${t("main.meme_template")}` : ""}
-        </Text>
+        </Text> */}
         <Box
           sx={{
             w: "full",
@@ -542,54 +543,55 @@ function MemeMaker() {
           }}
         >
           {firstStep === false ? (
-            <Grid
-              templateColumns={{
-                base: "repeat(3, 1fr)",
-                md: "repeat(4, 1fr)",
-              }}
-              gap={2}
-              w="100%"
-              templateRows="repeat(2, 1fr)"
-            >
-              {imageSelect &&
-                imageSelect.length > 0 &&
-                imageSelect.map((image) => (
-                  <GridItem
-                    key={image.id}
-                    sx={{
-                      position: "relative",
-                    }}
-                    cursor={"pointer"}
-                    onClick={(e: any) => toggleSelectImage(e, image)}
-                    width={["180px", "200px", "220px", "289px"]}
-                    height={["170px", "198px", "198px", "200px"]}
-                  >
-                    {image.checked === false ? (
-                      <></>
-                    ) : (
-                      <Box
-                        position="absolute"
-                        right="10px"
-                        top="10px"
-                        zIndex={5}
-                      >
-                        <IoIosCheckbox
-                          fontSize={"2.5rem"}
-                          color={PandaCat.colorCheck}
-                        />
-                      </Box>
-                    )}
-
-                    <Images
-                      src={image.url}
-                      width={["180px", "200px", "211px", "289px"]}
-                      height={["170px", "198px", "198px", "200px"]}
-                      alt="images"
-                    />
-                  </GridItem>
-                ))}
-            </Grid>
+            <></>
           ) : (
+            // <Grid
+            //   templateColumns={{
+            //     base: "repeat(3, 1fr)",
+            //     md: "repeat(4, 1fr)",
+            //   }}
+            //   gap={2}
+            //   w="100%"
+            //   templateRows="repeat(2, 1fr)"
+            // >
+            //   {imageSelect &&
+            //     imageSelect.length > 0 &&
+            //     imageSelect.map((image) => (
+            //       <GridItem
+            //         key={image.id}
+            //         sx={{
+            //           position: "relative",
+            //         }}
+            //         cursor={"pointer"}
+            //         onClick={(e: any) => toggleSelectImage(e, image)}
+            //         width={["180px", "200px", "220px", "289px"]}
+            //         height={["170px", "198px", "198px", "200px"]}
+            //       >
+            //         {image.checked === false ? (
+            //           <></>
+            //         ) : (
+            //           <Box
+            //             position="absolute"
+            //             right="10px"
+            //             top="10px"
+            //             zIndex={5}
+            //           >
+            //             <IoIosCheckbox
+            //               fontSize={"2.5rem"}
+            //               color={PandaCat.colorCheck}
+            //             />
+            //           </Box>
+            //         )}
+
+            //         <Images
+            //           src={image.url}
+            //           width={["180px", "200px", "211px", "289px"]}
+            //           height={["170px", "198px", "198px", "200px"]}
+            //           alt="images"
+            //         />
+            //       </GridItem>
+            //     ))}
+            // </Grid>
             <>
               <DndProvider backend={HTML5Backend}>
                 <Container>
