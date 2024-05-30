@@ -372,6 +372,7 @@ function MemeMaker() {
         mt: "6.5rem",
         mx: "auto",
         overflow: "hidden",
+        h: "100vh",
       }}
     >
       <Box
@@ -381,7 +382,7 @@ function MemeMaker() {
           boxShadow: "rgba(16, 24, 40, 0.08)",
           bg: "#31312B",
           p: "0.8rem",
-          mb: "8rem",
+          mb: "18rem",
         }}
       >
         <Box
