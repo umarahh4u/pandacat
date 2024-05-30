@@ -708,7 +708,7 @@ function MemeMaker() {
                                     justifyContent: "center",
                                     alignItems: "center",
                                     cursor: "pointer",
-                                    zIndex: 5,
+                                    zIndex: 10,
                                   }}
                                   onMouseDown={(e) =>
                                     handleRotationStart(e, index)
@@ -736,7 +736,7 @@ function MemeMaker() {
                                     backgroundColor: "red",
                                     borderRadius: "50%",
                                     color: "white",
-                                    zIndex: 5,
+                                    zIndex: 10,
                                   }}
                                   onClick={() => handleDeleteCatHead(index)}
                                 >
