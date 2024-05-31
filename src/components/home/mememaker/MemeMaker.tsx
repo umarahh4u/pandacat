@@ -16,6 +16,7 @@ import {
   Grid,
   GridItem,
   Image as Images,
+  chakra,
   Container,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
@@ -726,14 +727,14 @@ function MemeMaker() {
                                     color="white"
                                   />
                                 </div>
-                                <div
-                                  style={{
+                                <chakra.div
+                                  sx={{
                                     position: "absolute",
-                                    top: -20,
-                                    right: -10,
-                                    width: 40,
-                                    height: 40,
-                                    display: "flex",
+                                    top: -8,
+                                    right: -8,
+                                    width: 10,
+                                    height: 10,
+                                    display: ["none", "flex", "flex", "flex"],
                                     justifyContent: "center",
                                     alignItems: "center",
                                     cursor: "pointer",
@@ -742,14 +743,37 @@ function MemeMaker() {
                                     color: "white",
                                     zIndex: 10,
                                   }}
-                                  onPointerEnter={(e) => {
-                                    e.stopPropagation();
+                                  onClick={(e) => {
                                     e.preventDefault();
                                     handleDeleteCatHead(index);
                                   }}
                                 >
                                   <MdOutlineDelete fontSize={"1.5rem"} />
-                                </div>
+                                </chakra.div>
+
+                                <chakra.div
+                                  sx={{
+                                    position: "absolute",
+                                    top: -8,
+                                    right: -8,
+                                    width: 10,
+                                    height: 10,
+                                    display: ["flex", "none", "none", "none"],
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    cursor: "pointer",
+                                    backgroundColor: "red",
+                                    borderRadius: "50%",
+                                    color: "white",
+                                    zIndex: 10,
+                                  }}
+                                  onPointerDown={(e) => {
+                                    e.preventDefault();
+                                    handleDeleteCatHead(index);
+                                  }}
+                                >
+                                  <MdOutlineDelete fontSize={"1.5rem"} />
+                                </chakra.div>
                               </Rnd>
                             );
                           })}
